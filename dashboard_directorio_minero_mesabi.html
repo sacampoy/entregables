@@ -5,415 +5,323 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MESABI — Directorio Minero Sonora 2026</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--gold:#C07A28;--bg:#0f1117;--card:#1a1d27;--card2:#22252f;--border:#2a2d37;--text:#e4e4e7;--text2:#9ca3af;--red:#dc2626;--red-bg:rgba(220,38,38,.12);--green:#22c55e;--yellow:#eab308;--teal:#14b8a6;--purple:#a855f7;--blue:#3b82f6;--orange:#f97316;--gray:#6b7280}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
-.container{max-width:1600px;margin:0 auto;padding:20px}
-
-/* Header */
-.header{text-align:center;padding:30px 20px 20px;border-bottom:2px solid var(--gold)}
-.header h1{font-size:2rem;color:var(--gold);letter-spacing:2px;margin-bottom:4px}
-.header .subtitle{color:var(--text2);font-size:.95rem;margin-bottom:6px}
-.header .generated{color:var(--text2);font-size:.8rem;opacity:.7}
-
-/* KPI Cards */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:24px 0}
-.kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 16px;text-align:center;transition:transform .15s}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#C07A28;--bg:#0f1117;--card:#1a1d27;--card2:#22252f;--text:#e0e0e0;--text2:#999;--red:#c0392b;--green:#27ae60;--yellow:#f1c40f;--teal:#1abc9c;--purple:#8e44ad;--blue:#2980b9;--orange:#e67e22;--gray:#7f8c8d;--border:#2a2d37}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.header{background:linear-gradient(135deg,#1a1410 0%,#2a1f14 50%,#1a1410 100%);border-bottom:2px solid var(--gold);padding:24px 32px;text-align:center}
+.header h1{font-size:28px;color:var(--gold);letter-spacing:2px;margin-bottom:4px}
+.header .subtitle{color:var(--text2);font-size:14px;margin-bottom:4px}
+.header .generated{color:var(--text2);font-size:12px;opacity:.7}
+.container{max-width:1800px;margin:0 auto;padding:20px}
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:20px}
+.kpi{background:var(--card);border-radius:10px;padding:18px 16px;text-align:center;border:1px solid var(--border);transition:transform .15s}
 .kpi:hover{transform:translateY(-2px)}
-.kpi .kpi-val{font-size:1.7rem;font-weight:700;color:var(--gold)}
-.kpi .kpi-label{font-size:.78rem;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
-.kpi.highlight{border-color:var(--gold);background:rgba(192,122,40,.08)}
-.kpi.red-hl .kpi-val{color:var(--red)}
-
-/* Filters */
-.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:20px 0 10px;padding:16px;background:var(--card);border-radius:10px;border:1px solid var(--border)}
-.filters input[type=text]{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:6px;font-size:.88rem;width:260px;outline:none}
+.kpi .label{font-size:11px;text-transform:uppercase;color:var(--text2);letter-spacing:1px;margin-bottom:6px}
+.kpi .value{font-size:28px;font-weight:700;color:var(--gold)}
+.kpi.green .value{color:var(--green)}
+.kpi.red .value{color:var(--red)}
+.kpi.yellow .value{color:var(--yellow)}
+.kpi.teal .value{color:var(--teal)}
+.filters{background:var(--card);border-radius:10px;padding:16px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;border:1px solid var(--border)}
+.filters input[type=text]{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:6px;font-size:13px;width:260px;outline:none}
 .filters input[type=text]:focus{border-color:var(--gold)}
-.filters select{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-size:.88rem;outline:none;cursor:pointer;min-width:160px}
+.filters select{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;font-size:13px;outline:none;cursor:pointer;min-width:160px}
 .filters select:focus{border-color:var(--gold)}
-.btn{background:var(--gold);color:#fff;border:none;padding:8px 18px;border-radius:6px;cursor:pointer;font-size:.85rem;font-weight:600;transition:opacity .15s}
+.btn{background:var(--gold);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600;transition:opacity .15s}
 .btn:hover{opacity:.85}
 .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
 .btn-outline:hover{border-color:var(--gold);color:var(--gold)}
-.btn-csv{background:#22c55e}
-
-/* Active filter chips */
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.chip{background:rgba(192,122,40,.18);color:var(--gold);padding:4px 12px;border-radius:20px;font-size:.78rem;display:flex;align-items:center;gap:6px}
-.chip .x{cursor:pointer;font-weight:700;opacity:.7}
-.chip .x:hover{opacity:1}
-
-/* Table */
-.table-wrap{overflow-x:auto;margin-top:10px;border-radius:10px;border:1px solid var(--border)}
-table{width:100%;border-collapse:collapse;font-size:.82rem}
-thead th{background:var(--card);color:var(--gold);padding:10px 8px;text-align:left;cursor:pointer;user-select:none;white-space:nowrap;position:sticky;top:0;border-bottom:2px solid var(--gold)}
-thead th:hover{background:var(--card2)}
-thead th .sort-arrow{margin-left:4px;opacity:.4;font-size:.7rem}
-thead th.sorted .sort-arrow{opacity:1}
-tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
-tbody tr:hover{background:rgba(192,122,40,.06)}
-tbody tr.row-noodoo{background:var(--red-bg)}
-tbody tr.row-noodoo:hover{background:rgba(220,38,38,.18)}
-tbody td{padding:8px;vertical-align:top;white-space:nowrap}
-td.wrap{white-space:normal;max-width:200px}
-
-/* Semáforo */
-.sem{font-size:1.1rem;text-align:center}
-
-/* Section badges */
-.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.72rem;font-weight:600;color:#fff;white-space:nowrap}
-.badge-metalica{background:var(--gold)}
-.badge-nometalica{background:var(--teal)}
-.badge-exploracion{background:var(--purple)}
-.badge-perforacion{background:var(--blue)}
-.badge-contratistas{background:var(--orange)}
-.badge-maquinaria{background:var(--green)}
-.badge-construccion{background:var(--gray)}
-
-/* Expand row */
+.active-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{background:var(--card2);border:1px solid var(--gold);color:var(--gold);padding:4px 10px;border-radius:20px;font-size:11px;display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.chip:hover{background:var(--gold);color:#fff}
+.chip .x{font-weight:700}
+.table-wrap{background:var(--card);border-radius:10px;border:1px solid var(--border);overflow:hidden}
+.table-info{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead th{background:var(--card2);padding:10px 8px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);cursor:pointer;user-select:none;white-space:nowrap;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:2}
+thead th:hover{color:var(--gold)}
+thead th .sort-arrow{margin-left:4px;font-size:10px;opacity:.5}
+thead th.sorted .sort-arrow{opacity:1;color:var(--gold)}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s;cursor:pointer}
+tbody tr:hover{background:rgba(192,122,40,.08)}
+tbody tr.no-odoo{background:rgba(192,57,43,.1)}
+tbody tr.no-odoo:hover{background:rgba(192,57,43,.18)}
+tbody td{padding:8px;vertical-align:middle;white-space:nowrap}
+.semaforo{font-size:16px;text-align:center}
+.badge{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;display:inline-block;white-space:nowrap}
+.badge-metalica{background:rgba(192,122,40,.2);color:#d4a04a;border:1px solid rgba(192,122,40,.3)}
+.badge-nometalica{background:rgba(26,188,156,.15);color:var(--teal);border:1px solid rgba(26,188,156,.3)}
+.badge-exploracion{background:rgba(142,68,173,.15);color:#b370d4;border:1px solid rgba(142,68,173,.3)}
+.badge-perforacion{background:rgba(41,128,185,.15);color:#5dade2;border:1px solid rgba(41,128,185,.3)}
+.badge-contratistas{background:rgba(230,126,34,.15);color:var(--orange);border:1px solid rgba(230,126,34,.3)}
+.badge-maquinaria{background:rgba(39,174,96,.15);color:var(--green);border:1px solid rgba(39,174,96,.3)}
+.badge-construccion{background:rgba(127,140,141,.15);color:var(--gray);border:1px solid rgba(127,140,141,.3)}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
 .expand-row{display:none}
-.expand-row td{padding:12px 20px;background:var(--card2);border-bottom:2px solid var(--border)}
-.expand-content{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 24px;font-size:.82rem}
-.expand-content .el{color:var(--text2)}
-.expand-content .el strong{color:var(--text)}
-.expand-content a{color:var(--gold);text-decoration:none}
-.expand-content a:hover{text-decoration:underline}
-
-/* Pagination */
-.pagination{display:flex;justify-content:space-between;align-items:center;padding:14px 0;font-size:.85rem;color:var(--text2)}
-.pagination .page-btns{display:flex;gap:6px}
-.pagination .page-btns button{background:var(--card);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.82rem}
-.pagination .page-btns button:hover{border-color:var(--gold);color:var(--gold)}
-.pagination .page-btns button.active{background:var(--gold);color:#fff;border-color:var(--gold)}
-.pagination .page-btns button:disabled{opacity:.3;cursor:default}
-
-/* Email link */
-a.email-link{color:var(--blue);text-decoration:none}
-a.email-link:hover{text-decoration:underline}
-
-/* Clickable row */
-.clickable{cursor:pointer}
-
-/* Revenue */
+.expand-row td{padding:12px 16px;background:var(--card2);border-bottom:2px solid var(--gold)}
+.expand-row.open{display:table-row}
+.expand-content{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;font-size:12px}
+.expand-content .field{color:var(--text2)}
+.expand-content .field span{color:var(--text);display:block;margin-top:2px}
+.pagination{display:flex;justify-content:center;align-items:center;gap:8px;padding:16px;font-size:13px;color:var(--text2)}
+.pagination button{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px}
+.pagination button:hover{border-color:var(--gold);color:var(--gold)}
+.pagination button:disabled{opacity:.3;cursor:default}
+.pagination .current{color:var(--gold);font-weight:700}
 .revenue{color:var(--green);font-weight:600}
-
-/* Responsive */
-@media(max-width:768px){
-  .kpi-grid{grid-template-columns:repeat(3,1fr)}
-  .filters{flex-direction:column}
-  .filters input[type=text]{width:100%}
-  .filters select{width:100%}
-}
+.truncate{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(3,1fr)}.filters{flex-direction:column}.filters input[type=text],.filters select{width:100%}}
 </style>
 </head>
 <body>
-
-<div class="container">
-  <div class="header">
-    <h1>⛏️ MESABI — Directorio Minero Sonora 2026</h1>
-    <div class="subtitle">DGM Sonora × Historial Comercial MESABI — 90 empresas, 7 sectores</div>
-    <div class="generated" id="genDate"></div>
-  </div>
-
-  <div class="kpi-grid" id="kpiGrid"></div>
-
-  <div class="filters">
-    <input type="text" id="searchInput" placeholder="🔍 Buscar empresa, mina, mineral, contacto...">
-    <select id="filterSeccion"><option value="">Todas las Secciones</option></select>
-    <select id="filterStatus"><option value="">Todos los Status</option></select>
-    <select id="filterVendedor"><option value="">Todos los Vendedores</option></select>
-    <button class="btn btn-outline" onclick="clearFilters()">✕ Limpiar filtros</button>
-    <button class="btn btn-csv" onclick="exportCSV()">📥 Exportar CSV</button>
-  </div>
-  <div class="chips" id="chips"></div>
-
-  <div class="table-wrap">
-    <table>
-      <thead id="thead"></thead>
-      <tbody id="tbody"></tbody>
-    </table>
-  </div>
-
-  <div class="pagination" id="pagination"></div>
+<div class="header">
+<h1>⛏️ MESABI — Directorio Minero Sonora 2026</h1>
+<div class="subtitle">DGM Sonora × Historial Comercial MESABI — 85 empresas mineras</div>
+<div class="generated" id="genDate"></div>
 </div>
-
+<div class="container">
+<div class="kpi-row" id="kpis"></div>
+<div class="filters">
+<input type="text" id="search" placeholder="🔍 Buscar empresa, mina, mineral, contacto…">
+<select id="fSeccion"><option value="">— Sección —</option></select>
+<select id="fStatus"><option value="">— Status —</option></select>
+<select id="fVendedor"><option value="">— Vendedor —</option></select>
+<button class="btn-outline btn" id="clearAll">✕ Limpiar filtros</button>
+<button class="btn" id="csvBtn">📥 Exportar CSV</button>
+</div>
+<div class="active-filters" id="activeFilters"></div>
+<div class="table-wrap">
+<div class="table-info"><span id="tableCount"></span><span id="pageInfo"></span></div>
+<div style="overflow-x:auto;max-height:75vh;overflow-y:auto">
+<table>
+<thead><tr>
+<th data-col="semaforo">⏺<span class="sort-arrow"></span></th>
+<th data-col="empresa">Empresa<span class="sort-arrow"></span></th>
+<th data-col="mina">Mina<span class="sort-arrow"></span></th>
+<th data-col="seccion">Sección<span class="sort-arrow"></span></th>
+<th data-col="mineral">Mineral<span class="sort-arrow"></span></th>
+<th data-col="vendedor">Vendedor<span class="sort-arrow"></span></th>
+<th data-col="cotizaciones">Cotiz.<span class="sort-arrow"></span></th>
+<th data-col="facturas">Fact.<span class="sort-arrow"></span></th>
+<th data-col="revenue_mxn">Revenue MXN<span class="sort-arrow"></span></th>
+<th data-col="ultima_actividad">Última Act.<span class="sort-arrow"></span></th>
+<th data-col="contacto">Contacto<span class="sort-arrow"></span></th>
+<th data-col="telefono">Teléfono<span class="sort-arrow"></span></th>
+<th data-col="email">Email<span class="sort-arrow"></span></th>
+</tr></thead>
+<tbody id="tbody"></tbody>
+</table>
+</div>
+<div class="pagination" id="pagination"></div>
+</div>
+</div>
 <script>
-// === DATA ===
-const DATA = [{"empresa": "AGNICO EAGLE DE MÉXICO, S.A. DE C.V.", "mina": "MINA LA INDIA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 236 2220", "email": "Marco.galindo@agnicoeagle.com | gustavo.amador@agnicoeagle.com", "contacto": "ING. MARCO GALINDO - GERENTE GENERAL", "direccion": "Blvd. Luis Donaldo Colosio No. 450 Int. 704 L-2 Metrocentro Hermosillo, Sonora", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 68, "facturas": 52, "crm_opps": 10, "revenue_mxn": 2061765.87, "ultima_actividad": "2026-03-12", "odoo_id": 3040}, {"empresa": "ALAMOS GOLD MINAS DE ORO NACIONAL, S.A. DE C.V.", "mina": "MINA MULATOS", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 217 3707", "email": "luis.chavez@alamosgold.com | marcelo.martinez@minasdeoro.com  | dora.rios@minasdeoro.com", "contacto": "DR. LUIS CHÁVEZ MARTÍNEZ - VICEPRESIDENTE, MÉXICO", "direccion": "Calle de los Pimas No. 81, 83299 Hermosillo, Sonora", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "ARCELORMITTAL SONORA, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA FIERRO", "telefono": "(644) 410 6061", "email": "cesar.beltran@arcelormittal.com", "contacto": "LIC. CÉSAR BELTRÁN LUNA - DIRECTOR DE OPERACIONES SONORA", "direccion": "Carretera Internacional 15 Km. 203 Ejido El Henequén Cajeme, Son. C.P.85205", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "BUENA VISTA DEL COBRE, S.A. DE C.V.", "mina": "MINA DE CANANEA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA COBRE", "telefono": "(645) 332 8079 | (645) 332 8000 EX T. 3700 R.H.", "email": "gilberto.quintana@mm.gmexico.com", "contacto": "ING. JOSÉ ANTONIO MARTÍNEZ -  DIRECTOR DE OPERACIONES", "direccion": "Av. Juárez No. 4, C.P. 84620 Cananea, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Jesús Vázquez", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 3, "facturas": 3, "crm_opps": 0, "revenue_mxn": 233897.0, "ultima_actividad": "2025-08-08", "odoo_id": 3075}, {"empresa": "COMPAÑÍA MINERA LA LLAMARADA, S.A. DE C.V.", "mina": "MINA LAS CHISPAS", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA PLATA", "telefono": "(662) 216 9729 | (662) 213 7823 | (662) 262 0044", "email": "hectoraraiza@tintoroca.com | recursoshumanos@llamarada.com.mx |", "contacto": "ING. HÉCTOR ARAIZA MARTÍNEZ - DIRECTOR GENERAL", "direccion": "Blvd. Luis Encinas No. 604, Interior “A” Col. El Torreón, C.P. 83204", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "G E GALAZ, S.A. DE C.V.", "mina": "MINA CERRO COLORADO", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(645) 332 8079 | ( 332 8000, EXT. 3700 R.H.", "email": "martin.galaz@gegalaz.com", "contacto": "ING. MARTIN GALAZ ESCOBOZA - GERENTE GENERAL", "direccion": "Campeche No. 161, Col. San Benito, C.P. 83190 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 0, "facturas": 1, "crm_opps": 0, "revenue_mxn": 2000.0, "ultima_actividad": "2020-08-14", "odoo_id": 39175}, {"empresa": "COMPAÑÍA MINERA LA PARREÑA, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA COBRE", "telefono": "(632) 108 1800 | (632) 108 1811", "email": "pedro_gutierrez@penoles.com.mx | jorge_cervantes@penoles.com.mx", "contacto": "ING. PEDRO GUTIÉRREZ MAGALLANES  - GERENTE GENERAL", "direccion": "Carretera Cuitaca-Milpillas Km. 17 Col. Comunidad Milpillas, C.P. 84147", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "HELIOSTAR METALS S.A. DE C.V", "mina": "MINA LA COLORADA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 264 8191  | 662) 136 8080", "email": "manuel.encinas@heliostarmetals.com | ricardo.delcastillo@heliostarmetals.com", "contacto": "ING. MANUEL ERNESTO ENCINAS  - GERENTE GENERAL", "direccion": "Sonora. C.P. 83247.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "IMR BONANZA, S.A. DE C.V.", "mina": "MINA LA PERLA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 312 2868", "email": "naresh.singh@imr-resources.com  |  pavel.willis@imr-resources.com", "contacto": "", "direccion": "José Pino Suárez No.148-C Col. Centro, C.P. 83300 Hermosillo.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "INVECTURE GROUP COBRE DEL MAYO, S.A. DE C.V.", "mina": "MINA PIEDRAS VERDES", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA COBRE", "telefono": "(642) 853 4410", "email": "emitre@invecture.com", "contacto": "ING. EMILIO MITRE CENDEJAS - DIRECTOR GENERAL", "direccion": "Rosales No.2 Altos Álamos, Son. C.P. 85760.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MAGNA GOLD CORP.", "mina": "ING. JORGE VIDAÑA MONTENEGRO - GERENTE DE MINA SAN FRANCISCO", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(641) 324 1973 Y (641) 324", "email": "jorge.vidana@minasf.com", "contacto": "ING. JOSÉ LUIS SOTO - SUPERINTENDENTE DE MINA", "direccion": "Cuauhtémoc Final S/N, C.P. 84170 Estación Llano, Santa Ana, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINAS DE OROCO RESOURCES S.A. DE C.V.", "mina": "", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 211 1958", "email": "granmin@hotmail.com | l.arellano@goldgroupmining.com.mx |", "contacto": "ING. LUIS CARLOS ARELLANO - GERENTE", "direccion": "Blvd. Kino No. 309, Piso 3, Col. Country Club, C.P 83000 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2024-06-13", "odoo_id": 41741}, {"empresa": "MINERA CASTOR MÉXICO, S.A. DE C.V.", "mina": "MINA GOLFO DE ORO", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 300 0984", "email": "abringasa@gmail.com", "contacto": "ING. ALBERTO BRINGAS ALVARADO - REPRESENTANTE LEGAL", "direccion": "Sol, C.P. 83250 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA ALAMOS INC.", "mina": "MINA SANTANA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 213 3864", "email": "falvarez@mineraalamos.com | fsotomayor@mineraalamos.com", "contacto": "ING. FEDERICO ÁLVAREZ GASCA - GERENTE GENERAL", "direccion": "Pedro Moreno #24, Interior 2do. Piso Col. Centenario, C.P. 83260.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MOLYMEX, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE ÓXIDO DE MOLIBDENO", "telefono": "(634) 342 9550", "email": "alfredo.ortega@molymex.com.mx", "contacto": "LIC. ALFREDO ORTEGA TERÁN - DIRECTOR GENERAL", "direccion": "Metrocentro, C.P. 83250 Edificio Metrocentro Business Habitat", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA COLUMBIA DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(632) 690 9980", "email": "Melissa.albelais@autlan.com.mx", "contacto": "LIC. ROBERTO RIVERA LARREA - DIRECTOR DE OPERACIONES", "direccion": "Abelardo L. Rodríguez No.39, C.P. 84160 Fracc. Del Rio,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 2, "facturas": 0, "crm_opps": 1, "revenue_mxn": 0, "ultima_actividad": "2019-05-14", "odoo_id": 3311}, {"empresa": "OPERADORA DE MINAS DE NACOZARI, S.A. DE C.V.", "mina": "MINA DE NACOZARI (LA CARIDAD)", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA COBRE Y MOLIBDENO", "telefono": "(634) 342 9200, (634) 342 9201", "email": "joseantonio.martinez@mm.gmexico.com", "contacto": "ING. JOSÉ ANTONIO MARTÍNEZ MARTÍNEZ - DIRECTOR DE OPERACIONES", "direccion": "Km. 19, Carr. Nacozari – Agua Prieta, C.P. 84340 Nacozari De García, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 197, "facturas": 146, "crm_opps": 8, "revenue_mxn": 3238784.08, "ultima_actividad": "2026-03-11", "odoo_id": 3368}, {"empresa": "SAPUCHI MINERA, S. DE R.L. DE C.V.", "mina": "MINA LUZ DEL COBRE", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 135-", "email": "bquiroz@osiskodev.com", "contacto": "GEÓL. BARRY QUIROZ - PRESIDENTE", "direccion": "Metrocentro Hermosillo, Sonora, México, C.P. 83250.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "QUIRIEGO GOLD, S.A. DE C.V.", "mina": "MINA LA MINITA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA", "telefono": "(662) 210", "email": "mara.proyectos@gmail.com", "contacto": "", "direccion": "12 De Octubre No. 93 /Aguascalientes Y Tlaxcala, Col. San Benito Hermosillo.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SANTA ELENA ORO Y PLATA, S.A. DE C.V.", "mina": "MINA SANTA ELENA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO Y PLATA", "telefono": "(662)267 0180 Y (623) 232", "email": "olopez@firstmajestic.com", "contacto": "ING. OSCAR ALFREDO LÓPEZ PINEDO - GERENTE GENERAL", "direccion": "", "web": "www.firstmajestic.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "BARIMONT MINERIA, S. DE R.L. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA SULFATO DE BARIO (BARITA)", "telefono": "(662) 311 5055", "email": "carlos.lastra@barimont.com", "contacto": "", "direccion": "Km. 99.5, Carr. Hermosillo – Sahuaripa, C.P. 84790 Villa Pesqueira, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "CARBONES DC, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CARBÓN", "telefono": "(811) 408 1078 Y 935 0333", "email": "ginclan@carbonesdc.com", "contacto": "", "direccion": "Carretera Tecoripa- Suaqui Grande Km. 0.8 Tecoripa, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "CALIDRA DE SONORA, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CAL", "telefono": "(662) 208 4850", "email": "jestradas@calidra.com.mx", "contacto": "ING. ANTONIO ESTRADA - GERENTE DE PLANTA", "direccion": "Carr. Hermosillo-La Colorada Km. 17.5, C.P. 83299 Hermosillo, Sonora.", "web": "www.calidra.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "GRUPO SONORA LITHIUM", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "", "telefono": "(662) 251 0360", "email": "federico.rivera@bacanoraminerals.net", "contacto": "", "direccion": "Calle De Las Galaxias No. 68 Parque Industrial, C.P. 83297 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "DESARROLLOS ARIBABI, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA SILICA, CARBÓN Y GRAFITO", "telefono": "(633) 338 0404", "email": "dasa9710@hotmail.com", "contacto": "LIC. DAVID FIGUEROA ORTEGA - DIRECTOR GENERAL", "direccion": "Centro, C.P. 84269 Agua Prieta, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "GRAFITOS MEXICANOS S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "", "telefono": "(662) 210 7227", "email": "grafitosmexicanos@prodigy.net.mx", "contacto": "ING. CARLOS ALBERTO AGUIRRE CALLES - REPRESENTANTE", "direccion": "Reforma No. 89, Col. San Benito. C.P. 83190 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2020-02-17", "odoo_id": 38934}, {"empresa": "MANGANESOS DE LA TRINI, S. DE R.L. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CALCIO Y MARMOLINA", "telefono": "(644) 411 0281", "email": "minalatrini@edinosa.com", "contacto": "ING. GILBERTO BRITO - DIRECTOR", "direccion": "Calle Agiabampo No. 511c, C.P. 85890 Colonia Sonora, Navojoa, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERALES Y CARBONES DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "", "telefono": "(662) 251 5083", "email": "contabilidadh@minerales.com.mx", "contacto": "ING. KARLA ROMO ROXAN - GERENTE DE PLANTA HERMOSILLO", "direccion": "Hermosillo Blvd. De Los Ganaderos 984-B, Colonia Urbivilla, C.P. 83293.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2019-08-06", "odoo_id": 38435}, {"empresa": "MINERA REAL DE SAN JAVIER S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE, VENDE Y EXPORTA GRAFITO AMORFO", "telefono": "(662) 212 1527", "email": "marcobernal50@hotmail.com", "contacto": "ING. MARCO ANTONIO BERNAL PORTILLO - DIRECTOR GENERAL", "direccion": "Rayón Sur, No. 15, Colonia Centro, C.P. 83000 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 4, "facturas": 0, "crm_opps": 1, "revenue_mxn": 0, "ultima_actividad": "2025-10-14", "odoo_id": 40893}, {"empresa": "MINERA ROCA RODANDO, S. DE R.L. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CARBÓN", "telefono": "(662) 289-1000", "email": "gerardo.montijo@imerys.com  |  rosy.duarte@imerys.com", "contacto": "ING. GERARDO MONTIJO - GERENTE DE OPERACIONES", "direccion": "Carretera Mina Pilares Km 0.00, Col. Cuartel XX Cafe Combate, C.P. 83165, Hermosillo, Sonora", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SONORA, S.DE R.L.DE C.V", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CARBÓN", "telefono": "(662) 948", "email": "rubenbfloresleyva@hotmail.com", "contacto": "", "direccion": "Planta De Beneficio, Km. 2 Carretera Tecoripa - Suaqui Grande.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "OPERADORA DE MINAS DE NACOZARI, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CARBÓN", "telefono": "(633) 338 9429", "email": "joseantonio.martinez@mm.gmexico.com", "contacto": "ING. JOSÉ ANTONIO MARTÍNEZ MARTÍNEZ  - DIRECTOR GENERAL", "direccion": "Km. 43 Carretera Hermosillo-Yécora La Colorada, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 197, "facturas": 146, "crm_opps": 8, "revenue_mxn": 3238784.08, "ultima_actividad": "2026-03-11", "odoo_id": 3368}, {"empresa": "AZTEC MINERALS CORP.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 403 7448", "email": "david@aztecminerals.com", "contacto": "ING. JUAN MANUEL MORALES - GERENTE DE EXPLORACIÓN", "direccion": "Blvd. Navarrete #204 Col. Villa Satélite Entre Herrerias Y Olivares, Hermosillo, Sonora,83240.", "web": "www.aztecminerals.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "CIA. MINERA MAGNETITA, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 476", "email": "ayaxalba@hotmail.com", "contacto": "ING. JESUS AYAX ALBA PASCOE -", "direccion": "Sierra Morena No. 125 Altos Col. Loma Linda, C.P. 83150.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2024-06-10", "odoo_id": 41748}, {"empresa": "COMPAÑÍA MINERA TALAMAN, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 213 1554 Y 56", "email": "aliliavr@hotmail.com", "contacto": "", "direccion": "Dr. Aguilar No. 162 Col. Los Arcos, Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "EXPLORACIONES MINERAS DEL DESIERTO, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 251 0251 Y 251 0249", "email": "rh@gf2.com.mx", "contacto": "ING. SAMUEL FRAIJO FLORES - DIRECTOR GENERAL", "direccion": "Dr. Paliza No. 94, Casi Esquina Con Reforma Col. Centenario, C.P. 83260 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 10, "facturas": 3, "crm_opps": 1, "revenue_mxn": 1098.79, "ultima_actividad": "2026-02-11", "odoo_id": 3166}, {"empresa": "EXPLORACIONES MINERAS PARREÑA, S.A. DE C.V. -", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 236 1200", "email": "", "contacto": "ING. LUIS FELIPE NOVELO LÓPEZ - SUBDIRECTOR DE EXPLORACIÓN", "direccion": "Blvd. Navarrete No. 277, Esq. Torreón Col. Raquet Club, C.P. 83200 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 10, "facturas": 3, "crm_opps": 1, "revenue_mxn": 1098.79, "ultima_actividad": "2026-02-11", "odoo_id": 3166}, {"empresa": "EXPLORACIONES MINERAS PEÑOLES, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 208 2635 Y 289", "email": "h_gutierrez@penoles.com.mx", "contacto": "ING. HÉCTOR GUTIÉRREZ MENDOZA  - GERENTE GENERAL", "direccion": "Paseo Río Magdalena No.18, Entre Reforma Y Galeana, Col. Proyecto Río Sonora,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 10, "facturas": 3, "crm_opps": 1, "revenue_mxn": 1098.79, "ultima_actividad": "2026-02-11", "odoo_id": 3166}, {"empresa": "IMPULSORA MINERA SANTA CRUZ, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(623) 233 0515", "email": "drodriguez@santacruzsilver.com", "contacto": "ING. DANTE RODRÍGUEZ MONTES", "direccion": "Calle Libertad No. 2 Colonia Centro, C.P. 84960 San Felipe De Jesús, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "GRUPO GEOLÓGICO MINERO DEL DESIERTO, S. DE R.L. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 171 8650", "email": "danielcalles@hotmail.com", "contacto": "GEÓL. JESUS DANIEL CALLES MONTAÑO - GERENTE GENERAL", "direccion": "Segunda De Periférico 407 Interior A Colonia Luis Encinas.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "INDUSTRIAL MINERA MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 109 2163", "email": "alfonso.martinez@mm.gmexico.com", "contacto": "ING. ALFONSO MARTINEZ VERA - DIRECTOR CORPORATIVO DE", "direccion": "CARR. A BAHIA KINO KM. 8.5 COL. LA MANGA, HERMOSILLO,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 1, "crm_opps": 1, "revenue_mxn": 11400.0, "ultima_actividad": "2022-09-29", "odoo_id": 40581}, {"empresa": "MINERA EVRIM, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 264 8055", "email": "ignacio@orogenroyalties.com", "contacto": "ING. JESÚS IGNACIO CAMARENA GARCÍA - GERENTE DE EXPLORACIÓN", "direccion": "Ignacio Romero 167 Col San Benito, C.P. 83190 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA CASCABEL, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 210", "email": "gyeomans@imdex-cascabel.com", "contacto": "ING. RAFAEL GALLARDO  - JEFE DE GEÓLOGOS", "direccion": "Av. 13, No. 100, Entre Perimetral Y Calle 3 Col. Bugambilias, C.P. 83140 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "KOOTENAY SILVER INC.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(403) 880", "email": "makwaexploration@gmail.com", "contacto": "", "direccion": "", "web": "www.kootenaysilver.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA JM S.A. DE C.V. (KOOTENAY SILVER INC)", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 214", "email": "", "contacto": "LIC. MARÍA ELENA RODRÍGUEZ - GERENTE", "direccion": "Fco. González Bocanegra No. 91 Entre Alvarado Y Yocupicio Col. Periodista,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA LOS LAGARTOS, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 210", "email": "gyeomans@imdex-cascabel.com", "contacto": "GEÓL. MARÍA GUADALUPE YEOMANS  - GERENTE ADMINISTRATIVO", "direccion": "Ave. 13, No. 100, Entre Perimetral Y Calle Tres, Col. Bugambilias, C.P. 83140 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA PENDER, S.A. DE C.V", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 207", "email": "rhinojosa@garibaldiresources.com", "contacto": "SR. RAFAEL HINOJOSA MALDONADO - GERENTE GENERAL GARIBALDI RESOURCES CORP", "direccion": "Javier De León No. 707, E/Alfonso Iberri Y José G. Gutiérrez, Col. Pitic", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA TEOCUITLÁ, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "", "email": "", "contacto": "ING. RAUL DÍAZ UNZUETA - DIRECTOR", "direccion": "Rincón Del Raquet No.9 Col. Raquet Club, C.P. 83200, Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "PRIME MINING CORP.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(696) 102 8548", "email": "jpalma@primeminingcorp.ca", "contacto": "", "direccion": "", "web": "www.primeminingcorp.ca", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "RECURSOS STINGRAY DE COBRE S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 213 2483", "email": "e.sobrevilla@recursosstingray.com", "contacto": "ING. ENRIQUE SOBREVILLA MUÑOZ -  REPRESENTANTE LEGAL", "direccion": "Carretera a Ures Km. 0 s/n Col. San Pedro El Saucito, C.P. 83305 |", "web": "www.roledrilling.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "RESOURCE GEOSCIENCES DE MEXICO, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 214 2454 Y (662) 214", "email": "mail@resourcegeosciences.com", "contacto": "C.P. 83190 Hermosillo, Sonora.", "direccion": "14 De Abril No. 68, Entre Veracruz Y Nayarit Colonia San Benito,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "RIVERSIDE RESOURCES MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 267", "email": "mpena@rivres.com", "contacto": "ING. ABELARDO PEÑA - GERENTE GENERAL", "direccion": "Carr. Ures Km. 0 S/N, Col. San Pedro El Saucito. C.P. 833053. Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "X-ORE, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 295", "email": "jmmorales@x-ore.com", "contacto": "ING. JUAN MANUEL MORALES - GERENTE DE EXPLORACIÓN", "direccion": "Paseo Del Norte No. 47 Col. Paseos Del Sol Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SOGO HERMOSILLO, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 110 6922", "email": "", "contacto": "DIRECTOR COMERCIAL - PEDRO DOMÍNGUEZ", "direccion": "Calle San Antonio No. 29, Col. Palo Verde.", "web": "www.gruposogo.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SOLUCIONES INDUSTRIALES, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 301 4000, (662) 301 7651 Y (662) 215 2550", "email": "agonzalez@solucionesindustriales.ne", "contacto": "DIRECTOR GENERAL - LIC. LUIS GONZÁLEZ ARREOLA", "direccion": "Jaime Nuno No.4, C.P. 54090 Tlalnepantla", "web": "www.solucionesindustriales.net", "estado": "SONORA", "vendedor": "Mario León", "status": "EN ODOO", "en_odoo": "Sí", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": 42644}, {"empresa": "DEL PACÍFICO, S.A. DE C.V", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 251 0976 Y (662) 114", "email": "mjara@petroil.com.mx", "contacto": "GERENTE DE PLANTA Y ENCARGADO DE RECURSOS", "direccion": "Blvd. Enrique Mazon Lopez No. 1087, Col. La", "web": "www.petroil.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "CONSTRUCTORA TRAX S.A. DE C.V", "mina": "", "seccion": "CONSTRUCCIÓN", "mineral": "", "telefono": "(662) 254 0088 y (662) 256 5616", "email": "sitten_trax@hotmail.com", "contacto": "DIRECTOR GENERAL - ING. JESÚS SITTEN AYALA", "direccion": "", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "PLANIFICADA S.A. DE C.V", "mina": "", "seccion": "CONSTRUCCIÓN", "mineral": "", "telefono": "(662) 210 4721", "email": "info@gluyasconstrucciones.com", "contacto": "DIRECTOR COMERCIAL - ING. ADRIÁN PEÑA LEDESMA", "direccion": "Calle Tarasca No. 16 Sur, Sol. Nueva Estación, C.P. 83160. Hermosillo.", "web": "www.gluyasconstrucciones.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "INFRAESTRUCTURA, S.A. DE C.V.", "mina": "", "seccion": "CONSTRUCCIÓN", "mineral": "", "telefono": "(662) 212 6787, (662) 212 4154 Y (662) 211 8491", "email": "rochoa@grupo8a.com / lestrada@grupo8a.com", "contacto": "DIRECTOR - ING. ROBERTO OCHOA PADILLA", "direccion": "Colonia Los Sabinos, C.P. 83146 Hermosillo, Sonora.", "web": "www.grupo8a.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MOVIMPACTO DE MÉXICO S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 213 1024 y (662) 327 0508", "email": "valenzuela@movimpacto.com", "contacto": "GERENTE - ROLANDO VALENZUELA V.", "direccion": "Anza, C.P. 83248 Hermosillo, Sonora.", "web": "www.mundominero.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "S.A. DE C.V. (SEL MÉXICO)", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 205 7286", "email": "jose_castillon@selinc.com | servicioclientes@selinc.com", "contacto": "ING. JOSÉ CASTILLÓN - GERENTE DE VENTAS DEL NORTE", "direccion": "Tijuana, C.P. 22010 Tijuana, B.C.", "web": "www.selinc.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "VILLARREAL DIVISIÓN EQUIPOS, S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 197", "email": "ivan.orozco.i@vde.com.mx", "contacto": "GERENTE COMERCIAL - JUAN PAULO CERVANTES CAVAZOS", "direccion": "", "web": "www.solensa-gas.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "CIA. INDUSTRIAL HANKA, S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 210 0295  / (662) 210 0802 / (662) 276 4768", "email": "ignacio.vega@hanka.com.mx /", "contacto": "C.P. 83140 Hermosillo, Sonora.", "direccion": "Periférico Norte No.5, Local 12-A Colonia Los Rosales,", "web": "www.hankaexp.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 2, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2021-01-13", "odoo_id": 3103}, {"empresa": "ELECTRO METALIC SOLUTIONS S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 251 0429 | (662) 113 0335", "email": "jruiz@electro-metalic.com | sanchez@electro-metalic.com", "contacto": "", "direccion": "Carretera Hermosillo-Bahía De Kino Km 18.5 Col. La Manga,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "TECHPOWERMENT DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 285 4039", "email": "techpowerment@hotmail.com", "contacto": "GERENTE - ING. OSCAR RENE RIVERA MARTÍNEZ", "direccion": "Guadalupe Victoria # 109, C.P. 83190 Hermosillo, Sonora.", "web": "www.globalminingsupply.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "S.A. DE C.V. (DECONO)", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 218 0106 / (662) 218 0231", "email": "tiendahmo@decono.mx", "contacto": "", "direccion": "Olivares, C.P. 83180. Hermosillo, Sonora.", "web": "www.prominox.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "KAL TIRE S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "662) 262 6593 | (662) 108 4420 EXT. 262 | (662) 124 0162", "email": "ventas.hermosillo@kaltire.com", "contacto": "ING. BERNARDO PORTILLO ACUÑA", "direccion": "Benito., C.P. 83190", "web": "www.cadeco.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2023-11-09", "odoo_id": 3252}, {"empresa": "ESPECIALIZADOS S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(614) 688 8366", "email": "rchavarria@gruposach.com", "contacto": "ING. RICARDO CHAVARRIA HERNANDEZ - CEO", "direccion": "Av. Xavier Villaurrutia 30 Col. Urbi Villa Alameda 2,", "web": "www.inpromine.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "RECUPERADORA INDUSTRIAL C1 S.A. DE C.V", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 358 9817", "email": "ventas@recuperadoraindustrial.net", "contacto": "ING. AITANA GUZMÁN- VENTAS", "direccion": "", "web": "www.recuperadoraindustrial.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "APPLIED MEXICO, S.A. DE C.V.", "mina": "", "seccion": "MAQUINARIA Y EQUIPO", "mineral": "", "telefono": "(662) 215 5669", "email": "aispell@prodigy.net.mx", "contacto": "", "direccion": "Iturbide No. 27, Entre Jalisco Y Niños Héroes, Col.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "GEOS. THOMSON DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "MAQUINARIA Y EQUIPO", "mineral": "", "telefono": "(662) 210 8060 Y (662) 210", "email": "lramirez@applied.com.mx / gmoreno@applied.com.mx", "contacto": "DIRECTOR REGIONAL - SR. EDUARDO FALOMIR MORALES", "direccion": "San Benito, C.P. 83190 Hermosillo, Sonora.", "web": "www.bomizon.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "GRUPO SEPROMI, S.A. DE C.V.", "mina": "", "seccion": "MAQUINARIA Y EQUIPO", "mineral": "", "telefono": "(645) 332 4488", "email": "gruposepromi@hotmail.com", "contacto": "GERENTE GENERAL - VERÓNICA FIMBRES", "direccion": "San Benito, C.P. 83190 Hermosillo, Sonora.", "web": "www.idgcasadelgeologo.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "INDUSTRIALES, S.A. DE C.V.", "mina": "", "seccion": "MAQUINARIA Y EQUIPO", "mineral": "", "telefono": "(645) 332 6161", "email": "ventas.lyhmexico@nh.net", "contacto": "GERENTE GENERAL - SR. ERNESTO SÁNCHEZ BAHENA", "direccion": "Bacobampo No. 1424, Col. Sahuaro Final. C.P. 83178,", "web": "www.lhmexico.net", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "UM MINING S.A. DE C.V.", "mina": "", "seccion": "MAQUINARIA Y EQUIPO", "mineral": "", "telefono": "(662) 295 5095 | (871) 186 8434", "email": "uziel.perez@ummining.com.mx | raul.silva@ummining.com.mx", "contacto": "ING. UZIEL PÉREZ DE LA FUENTE - DIRECTOR COMERCIAL", "direccion": "Coah. México C.P. 27026.", "web": "www.ummining.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2020-12-30", "odoo_id": 39365}, {"empresa": "Y PROYECTOS AUXILIARES, S.A.", "mina": "", "seccion": "MAQUINARIA Y EQUIPO", "mineral": "", "telefono": "(662) 193 0211  |  (662) 296 9882", "email": "fmendoza@ambientesil.com  | |iromero@ambientesil.com", "contacto": "", "direccion": "Prados Del Centenario, C.P. 83260 Hermosillo, Sonora.", "web": "www.ambientesproductosdelimpieza.com", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 21, "facturas": 13, "crm_opps": 1, "revenue_mxn": 175221.76, "ultima_actividad": "2022-06-01", "odoo_id": 3165}, {"empresa": "FALCON PERFORACIONES MÉXICO S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 207 0245", "email": "gvillegas@falcon-drilling.com", "contacto": "GERENTE GENERAL - SR HECTOR GERARDO MARTINEZ VERDUGO", "direccion": "Coyoteros 81 Col. Apache Hermosillo Sonora.", "web": "www.geotec.cl", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2022-02-21", "odoo_id": 40549}, {"empresa": "G4 DRILLING MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251", "email": "mexico@g4drilling.com", "contacto": "DIRECTOR GENERAL - ING. DAIGLE ROBERT", "direccion": "Industrial, C.P. 83299 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "EN ODOO", "en_odoo": "Sí", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": 3189}, {"empresa": "LAYNE DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251", "email": "layne.mexico@gcinc.com", "contacto": "DIRECTOR GENERAL - ING. RAFAEL GUTIÉRREZ BADILLA", "direccion": "Col. Quinta Emilia, C.P. 83214 Hermosillo, Sonora.", "web": "www.graniteconstruction.com", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 20, "facturas": 23, "crm_opps": 4, "revenue_mxn": 212060.3, "ultima_actividad": "2023-02-28", "odoo_id": 3261}, {"empresa": "MAJOR DRILLING DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251 0261", "email": "david.boucher@majordrilling.com", "contacto": "GERENTE GENERAL - DAVID BOUCHER", "direccion": "Industrial, C.P. 83294 Hermosillo, Sonora.", "web": "www.majordrilling.com", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 8, "facturas": 6, "crm_opps": 2, "revenue_mxn": 25663.74, "ultima_actividad": "2025-12-01", "odoo_id": 3272}, {"empresa": "SIERRA SERVICIOS DE PERFORACIÓN S.A.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 216 0715 / (662) 248 9785 / (442) 467 9450", "email": "ruben@sierrap.com.mx", "contacto": "", "direccion": "Hermosillo, Sonora. C.P. 83210.", "web": "www.sierrap.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "TORNADO DRILLING, S.A.DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251 0683 y (662) 190", "email": "david.elias@tornado-drilling.com", "contacto": "C.P. 83299, Hermosillo, Sonora.", "direccion": "Calle De Los Tarahumaras No.11, Col. Parque Industrial,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 4, "facturas": 3, "crm_opps": 0, "revenue_mxn": 23144.79, "ultima_actividad": "2025-08-27", "odoo_id": 3451}, {"empresa": "LOPEZ OLIVAS Y ASOCIADOS S.C.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 260 7168 / (662) 167", "email": "hsmaldonadogarcia@gmail.co", "contacto": "ING. FRANCISCO LÓPEZ OLIVAS - GERENTE GENERAL", "direccion": "Tabasco No. 113, Esq. Con Reyes Col. San Benito, C.P.", "web": "www.lopezolivas.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "GRUPO LEGUAMEX", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(477) 913 9639", "email": "ventas@leguamex.com", "contacto": "LIC. XIMENA ARROYO - COMERCIALIZACIÓN", "direccion": "Carretera A La Victoria No. 45 Ejido La Victoria, C.P.", "web": "www.leguamex.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "PRECISION GPS, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 210 1188 | (662) 210 1028 | (662) 210 0111", "email": "ventas@precisiongps.mx", "contacto": "ING. SELATHIEL RAMOS HERRERA  - GERENTE GENERAL", "direccion": "Blvd. García Morales S/N Col. La Manga, C.P. 83220.", "web": "www.precisiongps.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SONORA ASESORES, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 214", "email": "hermosillo@harco.com.mx", "contacto": "GERENTE - LIC. CARLOS EDUARDO TREVIÑO DAVILA", "direccion": "Suaqui #230, Hermosillo, Sonora. Col. Pimentel.", "web": "www.harco.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "INSPECTORATE DE MÉXICO S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 260 3057 | (637) 372 3202", "email": "luis.gambiracio@bureauveritas.com", "contacto": "GERENTE DE HERMOSILLO -  C. LUIS GAMBIRACIO", "direccion": "Cedros 9b, E/Dalia Y Magnolia Colonia Libertad, C.P.", "web": "www.bureauveritas.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "LTM, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251", "email": "rmartinez@metalurgicos.com.mx", "contacto": "GERENTE GENERAL -  ING. RODRIGO MARTINEZ PEÑÚÑURI", "direccion": "De Los Ángeles Col. Las Quintas, C.P. 83240, Hermosillo,", "web": "www.alsglobal.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "NOROESTE S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 215 2346, 0875", "email": "info@prolabo.com.mx", "contacto": "DIRECTOR GENERAL - QUIM. MARCIAL CORDOVA SALCIDO", "direccion": "", "web": "www.prolabo.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SONORA SAMPLE PREPARATION, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251 0766 | (662)  262 0598", "email": "pfgalvez@quimicapima.com", "contacto": "", "direccion": "Calle Del Cobre No. 20 Parque Industrial, C.P. 83297", "web": "www.quimicapima.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SKYLINELAB MEXICO S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 2172 0125", "email": "carlosvillanueva@skylinelab.com", "contacto": "", "direccion": "Ave. Concord No. 136 Entre Helicópteros Y Aviación", "web": "www.sonoralabs.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}];
+const DATA=[{"empresa": "AGNICO EAGLE DE MÉXICO, S.A. DE C.V.", "mina": "MINA LA INDIA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 236 2220", "email": "Marco.galindo@agnicoeagle.com | gustavo.amador@agnicoeagle.com", "contacto": "ING. MARCO GALINDO - GERENTE GENERAL", "direccion": "Blvd. Luis Donaldo Colosio No. 450 Int. 704 L-2 Metrocentro Hermosillo, Sonora", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 68, "facturas": 52, "crm_opps": 10, "revenue_mxn": 2061765.87, "ultima_actividad": "2026-03-12", "odoo_id": 3040}, {"empresa": "ALAMOS GOLD MINAS DE ORO NACIONAL, S.A. DE C.V.", "mina": "MINA MULATOS", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 217 3707", "email": "luis.chavez@alamosgold.com | marcelo.martinez@minasdeoro.com  | dora.rios@minasdeoro.com", "contacto": "DR. LUIS CHÁVEZ MARTÍNEZ - VICEPRESIDENTE, MÉXICO", "direccion": "Calle de los Pimas No. 81, 83299 Hermosillo, Sonora", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "ARCELORMITTAL SONORA, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA FIERRO", "telefono": "(644) 410 6061", "email": "cesar.beltran@arcelormittal.com", "contacto": "LIC. CÉSAR BELTRÁN LUNA - DIRECTOR DE OPERACIONES SONORA", "direccion": "Carretera Internacional 15 Km. 203 Ejido El Henequén Cajeme, Son. C.P.85205", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "BUENA VISTA DEL COBRE, S.A. DE C.V.", "mina": "MINA DE CANANEA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA COBRE", "telefono": "(645) 332 8079 | (645) 332 8000 EX T. 3700 R.H.", "email": "gilberto.quintana@mm.gmexico.com", "contacto": "ING. JOSÉ ANTONIO MARTÍNEZ -  DIRECTOR DE OPERACIONES", "direccion": "Av. Juárez No. 4, C.P. 84620 Cananea, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Jesús Vázquez", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 3, "facturas": 3, "crm_opps": 0, "revenue_mxn": 233897.0, "ultima_actividad": "2025-08-08", "odoo_id": 3075}, {"empresa": "COMPAÑÍA MINERA LA LLAMARADA, S.A. DE C.V.", "mina": "MINA LAS CHISPAS", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA PLATA", "telefono": "(662) 216 9729 | (662) 213 7823 | (662) 262 0044", "email": "hectoraraiza@tintoroca.com | recursoshumanos@llamarada.com.mx |", "contacto": "ING. HÉCTOR ARAIZA MARTÍNEZ - DIRECTOR GENERAL", "direccion": "Blvd. Luis Encinas No. 604, Interior “A” Col. El Torreón, C.P. 83204", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "G E GALAZ, S.A. DE C.V.", "mina": "MINA CERRO COLORADO", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(645) 332 8079 | ( 332 8000, EXT. 3700 R.H.", "email": "martin.galaz@gegalaz.com", "contacto": "ING. MARTIN GALAZ ESCOBOZA - GERENTE GENERAL", "direccion": "Campeche No. 161, Col. San Benito, C.P. 83190 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 0, "facturas": 1, "crm_opps": 0, "revenue_mxn": 2000.0, "ultima_actividad": "2020-08-14", "odoo_id": 39175}, {"empresa": "COMPAÑÍA MINERA LA PARREÑA, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA COBRE", "telefono": "(632) 108 1800 | (632) 108 1811", "email": "pedro_gutierrez@penoles.com.mx | jorge_cervantes@penoles.com.mx", "contacto": "ING. PEDRO GUTIÉRREZ MAGALLANES  - GERENTE GENERAL", "direccion": "Carretera Cuitaca-Milpillas Km. 17 Col. Comunidad Milpillas, C.P. 84147", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "HELIOSTAR METALS S.A. DE C.V", "mina": "MINA LA COLORADA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 264 8191  | 662) 136 8080", "email": "manuel.encinas@heliostarmetals.com | ricardo.delcastillo@heliostarmetals.com", "contacto": "ING. MANUEL ERNESTO ENCINAS  - GERENTE GENERAL", "direccion": "Sonora. C.P. 83247.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "IMR BONANZA, S.A. DE C.V.", "mina": "MINA LA PERLA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 312 2868", "email": "naresh.singh@imr-resources.com  |  pavel.willis@imr-resources.com", "contacto": "", "direccion": "José Pino Suárez No.148-C Col. Centro, C.P. 83300 Hermosillo.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "INVECTURE GROUP COBRE DEL MAYO, S.A. DE C.V.", "mina": "MINA PIEDRAS VERDES", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA COBRE", "telefono": "(642) 853 4410", "email": "emitre@invecture.com", "contacto": "ING. EMILIO MITRE CENDEJAS - DIRECTOR GENERAL", "direccion": "Rosales No.2 Altos Álamos, Son. C.P. 85760.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MAGNA GOLD CORP.", "mina": "ING. JORGE VIDAÑA MONTENEGRO - GERENTE DE MINA SAN FRANCISCO", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(641) 324 1973 Y (641) 324", "email": "jorge.vidana@minasf.com", "contacto": "ING. JOSÉ LUIS SOTO - SUPERINTENDENTE DE MINA", "direccion": "Cuauhtémoc Final S/N, C.P. 84170 Estación Llano, Santa Ana, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINAS DE OROCO RESOURCES S.A. DE C.V.", "mina": "", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 211 1958", "email": "granmin@hotmail.com | l.arellano@goldgroupmining.com.mx |", "contacto": "ING. LUIS CARLOS ARELLANO - GERENTE", "direccion": "Blvd. Kino No. 309, Piso 3, Col. Country Club, C.P 83000 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2024-06-13", "odoo_id": 41741}, {"empresa": "MINERA CASTOR MÉXICO, S.A. DE C.V.", "mina": "MINA GOLFO DE ORO", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 300 0984", "email": "abringasa@gmail.com", "contacto": "ING. ALBERTO BRINGAS ALVARADO - REPRESENTANTE LEGAL", "direccion": "Sol, C.P. 83250 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA ALAMOS INC.", "mina": "MINA SANTANA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 213 3864", "email": "falvarez@mineraalamos.com | fsotomayor@mineraalamos.com", "contacto": "ING. FEDERICO ÁLVAREZ GASCA - GERENTE GENERAL", "direccion": "Pedro Moreno #24, Interior 2do. Piso Col. Centenario, C.P. 83260.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MOLYMEX, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE ÓXIDO DE MOLIBDENO", "telefono": "(634) 342 9550", "email": "alfredo.ortega@molymex.com.mx", "contacto": "LIC. ALFREDO ORTEGA TERÁN - DIRECTOR GENERAL", "direccion": "Metrocentro, C.P. 83250 Edificio Metrocentro Business Habitat", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA COLUMBIA DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(632) 690 9980", "email": "Melissa.albelais@autlan.com.mx", "contacto": "LIC. ROBERTO RIVERA LARREA - DIRECTOR DE OPERACIONES", "direccion": "Abelardo L. Rodríguez No.39, C.P. 84160 Fracc. Del Rio,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 2, "facturas": 0, "crm_opps": 1, "revenue_mxn": 0, "ultima_actividad": "2019-05-14", "odoo_id": 3311}, {"empresa": "OPERADORA DE MINAS DE NACOZARI, S.A. DE C.V.", "mina": "MINA DE NACOZARI (LA CARIDAD)", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA COBRE Y MOLIBDENO", "telefono": "(634) 342 9200, (634) 342 9201", "email": "joseantonio.martinez@mm.gmexico.com", "contacto": "ING. JOSÉ ANTONIO MARTÍNEZ MARTÍNEZ - DIRECTOR DE OPERACIONES", "direccion": "Km. 19, Carr. Nacozari – Agua Prieta, C.P. 84340 Nacozari De García, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 197, "facturas": 146, "crm_opps": 8, "revenue_mxn": 3238784.08, "ultima_actividad": "2026-03-11", "odoo_id": 3368}, {"empresa": "SAPUCHI MINERA, S. DE R.L. DE C.V.", "mina": "MINA LUZ DEL COBRE", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO", "telefono": "(662) 135-", "email": "bquiroz@osiskodev.com", "contacto": "GEÓL. BARRY QUIROZ - PRESIDENTE", "direccion": "Metrocentro Hermosillo, Sonora, México, C.P. 83250.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "QUIRIEGO GOLD, S.A. DE C.V.", "mina": "MINA LA MINITA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA", "telefono": "(662) 210", "email": "mara.proyectos@gmail.com", "contacto": "", "direccion": "12 De Octubre No. 93 /Aguascalientes Y Tlaxcala, Col. San Benito Hermosillo.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SANTA ELENA ORO Y PLATA, S.A. DE C.V.", "mina": "MINA SANTA ELENA", "seccion": "MINERÍA METÁLICA", "mineral": "PRODUCE Y BENEFICIA ORO Y PLATA", "telefono": "(662)267 0180 Y (623) 232", "email": "olopez@firstmajestic.com", "contacto": "ING. OSCAR ALFREDO LÓPEZ PINEDO - GERENTE GENERAL", "direccion": "", "web": "www.firstmajestic.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "BARIMONT MINERIA, S. DE R.L. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA SULFATO DE BARIO (BARITA)", "telefono": "(662) 311 5055", "email": "carlos.lastra@barimont.com", "contacto": "", "direccion": "Km. 99.5, Carr. Hermosillo – Sahuaripa, C.P. 84790 Villa Pesqueira, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "CARBONES DC, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CARBÓN", "telefono": "(811) 408 1078 Y 935 0333", "email": "ginclan@carbonesdc.com", "contacto": "", "direccion": "Carretera Tecoripa- Suaqui Grande Km. 0.8 Tecoripa, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "CALIDRA DE SONORA, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CAL", "telefono": "(662) 208 4850", "email": "jestradas@calidra.com.mx", "contacto": "ING. ANTONIO ESTRADA - GERENTE DE PLANTA", "direccion": "Carr. Hermosillo-La Colorada Km. 17.5, C.P. 83299 Hermosillo, Sonora.", "web": "www.calidra.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "GRUPO SONORA LITHIUM", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "", "telefono": "(662) 251 0360", "email": "federico.rivera@bacanoraminerals.net", "contacto": "", "direccion": "Calle De Las Galaxias No. 68 Parque Industrial, C.P. 83297 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "DESARROLLOS ARIBABI, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA SILICA, CARBÓN Y GRAFITO", "telefono": "(633) 338 0404", "email": "dasa9710@hotmail.com", "contacto": "LIC. DAVID FIGUEROA ORTEGA - DIRECTOR GENERAL", "direccion": "Centro, C.P. 84269 Agua Prieta, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "GRAFITOS MEXICANOS S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "", "telefono": "(662) 210 7227", "email": "grafitosmexicanos@prodigy.net.mx", "contacto": "ING. CARLOS ALBERTO AGUIRRE CALLES - REPRESENTANTE", "direccion": "Reforma No. 89, Col. San Benito. C.P. 83190 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2020-02-17", "odoo_id": 38934}, {"empresa": "MANGANESOS DE LA TRINI, S. DE R.L. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CALCIO Y MARMOLINA", "telefono": "(644) 411 0281", "email": "minalatrini@edinosa.com", "contacto": "ING. GILBERTO BRITO - DIRECTOR", "direccion": "Calle Agiabampo No. 511c, C.P. 85890 Colonia Sonora, Navojoa, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERALES Y CARBONES DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "", "telefono": "(662) 251 5083", "email": "contabilidadh@minerales.com.mx", "contacto": "ING. KARLA ROMO ROXAN - GERENTE DE PLANTA HERMOSILLO", "direccion": "Hermosillo Blvd. De Los Ganaderos 984-B, Colonia Urbivilla, C.P. 83293.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2019-08-06", "odoo_id": 38435}, {"empresa": "MINERA REAL DE SAN JAVIER S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE, VENDE Y EXPORTA GRAFITO AMORFO", "telefono": "(662) 212 1527", "email": "marcobernal50@hotmail.com", "contacto": "ING. MARCO ANTONIO BERNAL PORTILLO - DIRECTOR GENERAL", "direccion": "Rayón Sur, No. 15, Colonia Centro, C.P. 83000 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 4, "facturas": 0, "crm_opps": 1, "revenue_mxn": 0, "ultima_actividad": "2025-10-14", "odoo_id": 40893}, {"empresa": "MINERA ROCA RODANDO, S. DE R.L. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CARBÓN", "telefono": "(662) 289-1000", "email": "gerardo.montijo@imerys.com  |  rosy.duarte@imerys.com", "contacto": "ING. GERARDO MONTIJO - GERENTE DE OPERACIONES", "direccion": "Carretera Mina Pilares Km 0.00, Col. Cuartel XX Cafe Combate, C.P. 83165, Hermosillo, Sonora", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SONORA, S.DE R.L.DE C.V", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CARBÓN", "telefono": "(662) 948", "email": "rubenbfloresleyva@hotmail.com", "contacto": "", "direccion": "Planta De Beneficio, Km. 2 Carretera Tecoripa - Suaqui Grande.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "OPERADORA DE MINAS DE NACOZARI, S.A. DE C.V.", "mina": "", "seccion": "MINERÍA NO METÁLICA", "mineral": "PRODUCE Y BENEFICIA CARBÓN", "telefono": "(633) 338 9429", "email": "joseantonio.martinez@mm.gmexico.com", "contacto": "ING. JOSÉ ANTONIO MARTÍNEZ MARTÍNEZ  - DIRECTOR GENERAL", "direccion": "Km. 43 Carretera Hermosillo-Yécora La Colorada, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 197, "facturas": 146, "crm_opps": 8, "revenue_mxn": 3238784.08, "ultima_actividad": "2026-03-11", "odoo_id": 3368}, {"empresa": "AZTEC MINERALS CORP.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 403 7448", "email": "david@aztecminerals.com", "contacto": "ING. JUAN MANUEL MORALES - GERENTE DE EXPLORACIÓN", "direccion": "Blvd. Navarrete #204 Col. Villa Satélite Entre Herrerias Y Olivares, Hermosillo, Sonora,83240.", "web": "www.aztecminerals.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "CIA. MINERA MAGNETITA, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 476", "email": "ayaxalba@hotmail.com", "contacto": "ING. JESUS AYAX ALBA PASCOE -", "direccion": "Sierra Morena No. 125 Altos Col. Loma Linda, C.P. 83150.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2024-06-10", "odoo_id": 41748}, {"empresa": "COMPAÑÍA MINERA TALAMAN, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 213 1554 Y 56", "email": "aliliavr@hotmail.com", "contacto": "", "direccion": "Dr. Aguilar No. 162 Col. Los Arcos, Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "EXPLORACIONES MINERAS DEL DESIERTO, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 251 0251 Y 251 0249", "email": "rh@gf2.com.mx", "contacto": "ING. SAMUEL FRAIJO FLORES - DIRECTOR GENERAL", "direccion": "Dr. Paliza No. 94, Casi Esquina Con Reforma Col. Centenario, C.P. 83260 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 10, "facturas": 3, "crm_opps": 1, "revenue_mxn": 1098.79, "ultima_actividad": "2026-02-11", "odoo_id": 3166}, {"empresa": "EXPLORACIONES MINERAS PARREÑA, S.A. DE C.V. -", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 236 1200", "email": "", "contacto": "ING. LUIS FELIPE NOVELO LÓPEZ - SUBDIRECTOR DE EXPLORACIÓN", "direccion": "Blvd. Navarrete No. 277, Esq. Torreón Col. Raquet Club, C.P. 83200 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 10, "facturas": 3, "crm_opps": 1, "revenue_mxn": 1098.79, "ultima_actividad": "2026-02-11", "odoo_id": 3166}, {"empresa": "EXPLORACIONES MINERAS PEÑOLES, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 208 2635 Y 289", "email": "h_gutierrez@penoles.com.mx", "contacto": "ING. HÉCTOR GUTIÉRREZ MENDOZA  - GERENTE GENERAL", "direccion": "Paseo Río Magdalena No.18, Entre Reforma Y Galeana, Col. Proyecto Río Sonora,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 10, "facturas": 3, "crm_opps": 1, "revenue_mxn": 1098.79, "ultima_actividad": "2026-02-11", "odoo_id": 3166}, {"empresa": "IMPULSORA MINERA SANTA CRUZ, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(623) 233 0515", "email": "drodriguez@santacruzsilver.com", "contacto": "ING. DANTE RODRÍGUEZ MONTES", "direccion": "Calle Libertad No. 2 Colonia Centro, C.P. 84960 San Felipe De Jesús, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "GRUPO GEOLÓGICO MINERO DEL DESIERTO, S. DE R.L. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 171 8650", "email": "danielcalles@hotmail.com", "contacto": "GEÓL. JESUS DANIEL CALLES MONTAÑO - GERENTE GENERAL", "direccion": "Segunda De Periférico 407 Interior A Colonia Luis Encinas.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "INDUSTRIAL MINERA MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 109 2163", "email": "alfonso.martinez@mm.gmexico.com", "contacto": "ING. ALFONSO MARTINEZ VERA - DIRECTOR CORPORATIVO DE", "direccion": "CARR. A BAHIA KINO KM. 8.5 COL. LA MANGA, HERMOSILLO,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 1, "crm_opps": 1, "revenue_mxn": 11400.0, "ultima_actividad": "2022-09-29", "odoo_id": 40581}, {"empresa": "MINERA EVRIM, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 264 8055", "email": "ignacio@orogenroyalties.com", "contacto": "ING. JESÚS IGNACIO CAMARENA GARCÍA - GERENTE DE EXPLORACIÓN", "direccion": "Ignacio Romero 167 Col San Benito, C.P. 83190 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA CASCABEL, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 210", "email": "gyeomans@imdex-cascabel.com", "contacto": "ING. RAFAEL GALLARDO  - JEFE DE GEÓLOGOS", "direccion": "Av. 13, No. 100, Entre Perimetral Y Calle 3 Col. Bugambilias, C.P. 83140 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "KOOTENAY SILVER INC.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(403) 880", "email": "makwaexploration@gmail.com", "contacto": "", "direccion": "", "web": "www.kootenaysilver.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA JM S.A. DE C.V. (KOOTENAY SILVER INC)", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 214", "email": "", "contacto": "LIC. MARÍA ELENA RODRÍGUEZ - GERENTE", "direccion": "Fco. González Bocanegra No. 91 Entre Alvarado Y Yocupicio Col. Periodista,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA LOS LAGARTOS, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 210", "email": "gyeomans@imdex-cascabel.com", "contacto": "GEÓL. MARÍA GUADALUPE YEOMANS  - GERENTE ADMINISTRATIVO", "direccion": "Ave. 13, No. 100, Entre Perimetral Y Calle Tres, Col. Bugambilias, C.P. 83140 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA PENDER, S.A. DE C.V", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 207", "email": "rhinojosa@garibaldiresources.com", "contacto": "SR. RAFAEL HINOJOSA MALDONADO - GERENTE GENERAL GARIBALDI RESOURCES CORP", "direccion": "Javier De León No. 707, E/Alfonso Iberri Y José G. Gutiérrez, Col. Pitic", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MINERA TEOCUITLÁ, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "", "email": "", "contacto": "ING. RAUL DÍAZ UNZUETA - DIRECTOR", "direccion": "Rincón Del Raquet No.9 Col. Raquet Club, C.P. 83200, Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "PRIME MINING CORP.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(696) 102 8548", "email": "jpalma@primeminingcorp.ca", "contacto": "", "direccion": "", "web": "www.primeminingcorp.ca", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "RECURSOS STINGRAY DE COBRE S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 213 2483", "email": "e.sobrevilla@recursosstingray.com", "contacto": "ING. ENRIQUE SOBREVILLA MUÑOZ -  REPRESENTANTE LEGAL", "direccion": "Carretera a Ures Km. 0 s/n Col. San Pedro El Saucito, C.P. 83305 |", "web": "www.roledrilling.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "RESOURCE GEOSCIENCES DE MEXICO, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 214 2454 Y (662) 214", "email": "mail@resourcegeosciences.com", "contacto": "C.P. 83190 Hermosillo, Sonora.", "direccion": "14 De Abril No. 68, Entre Veracruz Y Nayarit Colonia San Benito,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "RIVERSIDE RESOURCES MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 267", "email": "mpena@rivres.com", "contacto": "ING. ABELARDO PEÑA - GERENTE GENERAL", "direccion": "Carr. Ures Km. 0 S/N, Col. San Pedro El Saucito. C.P. 833053. Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "X-ORE, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 295", "email": "jmmorales@x-ore.com", "contacto": "ING. JUAN MANUEL MORALES - GERENTE DE EXPLORACIÓN", "direccion": "Paseo Del Norte No. 47 Col. Paseos Del Sol Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SOGO HERMOSILLO, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 110 6922", "email": "", "contacto": "DIRECTOR COMERCIAL - PEDRO DOMÍNGUEZ", "direccion": "Calle San Antonio No. 29, Col. Palo Verde.", "web": "www.gruposogo.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SOLUCIONES INDUSTRIALES, S.A. DE C.V.", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 301 4000, (662) 301 7651 Y (662) 215 2550", "email": "agonzalez@solucionesindustriales.ne", "contacto": "DIRECTOR GENERAL - LIC. LUIS GONZÁLEZ ARREOLA", "direccion": "Jaime Nuno No.4, C.P. 54090 Tlalnepantla", "web": "www.solucionesindustriales.net", "estado": "SONORA", "vendedor": "Mario León", "status": "EN ODOO", "en_odoo": "Sí", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": 42644}, {"empresa": "DEL PACÍFICO, S.A. DE C.V", "mina": "", "seccion": "EMPRESAS DE EXPLORACIÓN", "mineral": "", "telefono": "(662) 251 0976 Y (662) 114", "email": "mjara@petroil.com.mx", "contacto": "GERENTE DE PLANTA Y ENCARGADO DE RECURSOS", "direccion": "Blvd. Enrique Mazon Lopez No. 1087, Col. La", "web": "www.petroil.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "CONSTRUCTORA TRAX S.A. DE C.V", "mina": "", "seccion": "CONSTRUCCIÓN", "mineral": "", "telefono": "(662) 254 0088 y (662) 256 5616", "email": "sitten_trax@hotmail.com", "contacto": "DIRECTOR GENERAL - ING. JESÚS SITTEN AYALA", "direccion": "", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "PLANIFICADA S.A. DE C.V", "mina": "", "seccion": "CONSTRUCCIÓN", "mineral": "", "telefono": "(662) 210 4721", "email": "info@gluyasconstrucciones.com", "contacto": "DIRECTOR COMERCIAL - ING. ADRIÁN PEÑA LEDESMA", "direccion": "Calle Tarasca No. 16 Sur, Sol. Nueva Estación, C.P. 83160. Hermosillo.", "web": "www.gluyasconstrucciones.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "INFRAESTRUCTURA, S.A. DE C.V.", "mina": "", "seccion": "CONSTRUCCIÓN", "mineral": "", "telefono": "(662) 212 6787, (662) 212 4154 Y (662) 211 8491", "email": "rochoa@grupo8a.com / lestrada@grupo8a.com", "contacto": "DIRECTOR - ING. ROBERTO OCHOA PADILLA", "direccion": "Colonia Los Sabinos, C.P. 83146 Hermosillo, Sonora.", "web": "www.grupo8a.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "MOVIMPACTO DE MÉXICO S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 213 1024 y (662) 327 0508", "email": "valenzuela@movimpacto.com", "contacto": "GERENTE - ROLANDO VALENZUELA V.", "direccion": "Anza, C.P. 83248 Hermosillo, Sonora.", "web": "www.mundominero.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "S.A. DE C.V. (SEL MÉXICO)", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 205 7286", "email": "jose_castillon@selinc.com | servicioclientes@selinc.com", "contacto": "ING. JOSÉ CASTILLÓN - GERENTE DE VENTAS DEL NORTE", "direccion": "Tijuana, C.P. 22010 Tijuana, B.C.", "web": "www.selinc.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "VILLARREAL DIVISIÓN EQUIPOS, S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 197", "email": "ivan.orozco.i@vde.com.mx", "contacto": "GERENTE COMERCIAL - JUAN PAULO CERVANTES CAVAZOS", "direccion": "", "web": "www.solensa-gas.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "CIA. INDUSTRIAL HANKA, S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 210 0295  / (662) 210 0802 / (662) 276 4768", "email": "ignacio.vega@hanka.com.mx /", "contacto": "C.P. 83140 Hermosillo, Sonora.", "direccion": "Periférico Norte No.5, Local 12-A Colonia Los Rosales,", "web": "www.hankaexp.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 2, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2021-01-13", "odoo_id": 3103}, {"empresa": "ELECTRO METALIC SOLUTIONS S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 251 0429 | (662) 113 0335", "email": "jruiz@electro-metalic.com | sanchez@electro-metalic.com", "contacto": "", "direccion": "Carretera Hermosillo-Bahía De Kino Km 18.5 Col. La Manga,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "TECHPOWERMENT DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 285 4039", "email": "techpowerment@hotmail.com", "contacto": "GERENTE - ING. OSCAR RENE RIVERA MARTÍNEZ", "direccion": "Guadalupe Victoria # 109, C.P. 83190 Hermosillo, Sonora.", "web": "www.globalminingsupply.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "S.A. DE C.V. (DECONO)", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 218 0106 / (662) 218 0231", "email": "tiendahmo@decono.mx", "contacto": "", "direccion": "Olivares, C.P. 83180. Hermosillo, Sonora.", "web": "www.prominox.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "KAL TIRE S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "662) 262 6593 | (662) 108 4420 EXT. 262 | (662) 124 0162", "email": "ventas.hermosillo@kaltire.com", "contacto": "ING. BERNARDO PORTILLO ACUÑA", "direccion": "Benito., C.P. 83190", "web": "www.cadeco.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2023-11-09", "odoo_id": 3252}, {"empresa": "ESPECIALIZADOS S.A. DE C.V.", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(614) 688 8366", "email": "rchavarria@gruposach.com", "contacto": "ING. RICARDO CHAVARRIA HERNANDEZ - CEO", "direccion": "Av. Xavier Villaurrutia 30 Col. Urbi Villa Alameda 2,", "web": "www.inpromine.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "RECUPERADORA INDUSTRIAL C1 S.A. DE C.V", "mina": "", "seccion": "CONTRATISTAS MINEROS", "mineral": "", "telefono": "(662) 358 9817", "email": "ventas@recuperadoraindustrial.net", "contacto": "ING. AITANA GUZMÁN- VENTAS", "direccion": "", "web": "www.recuperadoraindustrial.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "GEOS. THOMSON DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "MAQUINARIA Y EQUIPO", "mineral": "", "telefono": "(662) 210 8060 Y (662) 210", "email": "lramirez@applied.com.mx / gmoreno@applied.com.mx", "contacto": "DIRECTOR REGIONAL - SR. EDUARDO FALOMIR MORALES", "direccion": "San Benito, C.P. 83190 Hermosillo, Sonora.", "web": "www.bomizon.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "GRUPO SEPROMI, S.A. DE C.V.", "mina": "", "seccion": "MAQUINARIA Y EQUIPO", "mineral": "", "telefono": "(645) 332 4488", "email": "gruposepromi@hotmail.com", "contacto": "GERENTE GENERAL - VERÓNICA FIMBRES", "direccion": "San Benito, C.P. 83190 Hermosillo, Sonora.", "web": "www.idgcasadelgeologo.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "INDUSTRIALES, S.A. DE C.V.", "mina": "", "seccion": "MAQUINARIA Y EQUIPO", "mineral": "", "telefono": "(645) 332 6161", "email": "ventas.lyhmexico@nh.net", "contacto": "GERENTE GENERAL - SR. ERNESTO SÁNCHEZ BAHENA", "direccion": "Bacobampo No. 1424, Col. Sahuaro Final. C.P. 83178,", "web": "www.lhmexico.net", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "UM MINING S.A. DE C.V.", "mina": "", "seccion": "MAQUINARIA Y EQUIPO", "mineral": "", "telefono": "(662) 295 5095 | (871) 186 8434", "email": "uziel.perez@ummining.com.mx | raul.silva@ummining.com.mx", "contacto": "ING. UZIEL PÉREZ DE LA FUENTE - DIRECTOR COMERCIAL", "direccion": "Coah. México C.P. 27026.", "web": "www.ummining.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2020-12-30", "odoo_id": 39365}, {"empresa": "Y PROYECTOS AUXILIARES, S.A.", "mina": "", "seccion": "MAQUINARIA Y EQUIPO", "mineral": "", "telefono": "(662) 193 0211  |  (662) 296 9882", "email": "fmendoza@ambientesil.com  | |iromero@ambientesil.com", "contacto": "", "direccion": "Prados Del Centenario, C.P. 83260 Hermosillo, Sonora.", "web": "www.ambientesproductosdelimpieza.com", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 21, "facturas": 13, "crm_opps": 1, "revenue_mxn": 175221.76, "ultima_actividad": "2022-06-01", "odoo_id": 3165}, {"empresa": "FALCON PERFORACIONES MÉXICO S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 207 0245", "email": "gvillegas@falcon-drilling.com", "contacto": "GERENTE GENERAL - SR HECTOR GERARDO MARTINEZ VERDUGO", "direccion": "Coyoteros 81 Col. Apache Hermosillo Sonora.", "web": "www.geotec.cl", "estado": "SONORA", "vendedor": "Mario León", "status": "COTIZADO", "en_odoo": "Sí", "cotizaciones": 1, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "2022-02-21", "odoo_id": 40549}, {"empresa": "G4 DRILLING MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251", "email": "mexico@g4drilling.com", "contacto": "DIRECTOR GENERAL - ING. DAIGLE ROBERT", "direccion": "Industrial, C.P. 83299 Hermosillo, Sonora.", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "EN ODOO", "en_odoo": "Sí", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": 3189}, {"empresa": "LAYNE DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251", "email": "layne.mexico@gcinc.com", "contacto": "DIRECTOR GENERAL - ING. RAFAEL GUTIÉRREZ BADILLA", "direccion": "Col. Quinta Emilia, C.P. 83214 Hermosillo, Sonora.", "web": "www.graniteconstruction.com", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 20, "facturas": 23, "crm_opps": 4, "revenue_mxn": 212060.3, "ultima_actividad": "2023-02-28", "odoo_id": 3261}, {"empresa": "MAJOR DRILLING DE MÉXICO, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251 0261", "email": "david.boucher@majordrilling.com", "contacto": "GERENTE GENERAL - DAVID BOUCHER", "direccion": "Industrial, C.P. 83294 Hermosillo, Sonora.", "web": "www.majordrilling.com", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 8, "facturas": 6, "crm_opps": 2, "revenue_mxn": 25663.74, "ultima_actividad": "2025-12-01", "odoo_id": 3272}, {"empresa": "SIERRA SERVICIOS DE PERFORACIÓN S.A.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 216 0715 / (662) 248 9785 / (442) 467 9450", "email": "ruben@sierrap.com.mx", "contacto": "", "direccion": "Hermosillo, Sonora. C.P. 83210.", "web": "www.sierrap.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "TORNADO DRILLING, S.A.DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251 0683 y (662) 190", "email": "david.elias@tornado-drilling.com", "contacto": "C.P. 83299, Hermosillo, Sonora.", "direccion": "Calle De Los Tarahumaras No.11, Col. Parque Industrial,", "web": "", "estado": "SONORA", "vendedor": "Mario León", "status": "ACTIVO", "en_odoo": "Sí", "cotizaciones": 4, "facturas": 3, "crm_opps": 0, "revenue_mxn": 23144.79, "ultima_actividad": "2025-08-27", "odoo_id": 3451}, {"empresa": "INSPECTORATE DE MÉXICO S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 260 3057 | (637) 372 3202", "email": "luis.gambiracio@bureauveritas.com", "contacto": "GERENTE DE HERMOSILLO -  C. LUIS GAMBIRACIO", "direccion": "Cedros 9b, E/Dalia Y Magnolia Colonia Libertad, C.P.", "web": "www.bureauveritas.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "LTM, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251", "email": "rmartinez@metalurgicos.com.mx", "contacto": "GERENTE GENERAL -  ING. RODRIGO MARTINEZ PEÑÚÑURI", "direccion": "De Los Ángeles Col. Las Quintas, C.P. 83240, Hermosillo,", "web": "www.alsglobal.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "NOROESTE S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 215 2346, 0875", "email": "info@prolabo.com.mx", "contacto": "DIRECTOR GENERAL - QUIM. MARCIAL CORDOVA SALCIDO", "direccion": "", "web": "www.prolabo.com.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SONORA SAMPLE PREPARATION, S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 251 0766 | (662)  262 0598", "email": "pfgalvez@quimicapima.com", "contacto": "", "direccion": "Calle Del Cobre No. 20 Parque Industrial, C.P. 83297", "web": "www.quimicapima.com", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}, {"empresa": "SKYLINELAB MEXICO S.A. DE C.V.", "mina": "", "seccion": "PERFORACIÓN MINERA", "mineral": "", "telefono": "(662) 2172 0125", "email": "carlosvillanueva@skylinelab.com", "contacto": "", "direccion": "Ave. Concord No. 136 Entre Helicópteros Y Aviación", "web": "www.sonoralabs.mx", "estado": "SONORA", "vendedor": "Mario León", "status": "NO EN ODOO", "en_odoo": "No", "cotizaciones": 0, "facturas": 0, "crm_opps": 0, "revenue_mxn": 0, "ultima_actividad": "", "odoo_id": null}];
+const PAGE_SIZE=100;
+let filtered=[...DATA];
+let sortCol=null,sortAsc=true,currentPage=0;
 
-// === CONFIG ===
-const PAGE_SIZE = 50;
-let currentPage = 1;
-let sortCol = null;
-let sortAsc = true;
-let filtered = [...DATA];
+// Generated date
+const now=new Date();
+const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+document.getElementById('genDate').textContent=`Generado: ${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()} — ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} hrs`;
 
-// === HELPERS ===
-const fmt = n => n ? '$' + Number(n).toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2}) : '$0.00';
-const fmtShort = n => {
-  if(!n || n===0) return '$0';
-  if(n>=1e6) return '$'+( n/1e6).toFixed(1)+'M';
-  if(n>=1e3) return '$'+(n/1e3).toFixed(0)+'K';
-  return '$'+n.toFixed(0);
-};
-
-function semaforo(s){
-  const m={'ACTIVO':'🟢','COTIZADO':'🟡','EN ODOO':'⚪','NO EN ODOO':'🔴'};
-  return m[s]||'⚫';
+// Semáforo logic
+function semaforo(r){
+  if(r.status==='ACTIVO')return{icon:'🟢',order:1};
+  if(r.status==='COTIZADO')return{icon:'🟡',order:2};
+  if(r.status==='EN ODOO')return{icon:'⚪',order:3};
+  return{icon:'🔴',order:4};
 }
 
-function badgeClass(sec){
-  if(sec.includes('NO METÁLICA')) return 'badge-nometalica';
-  if(sec.includes('METÁLICA')) return 'badge-metalica';
-  if(sec.includes('EXPLORACIÓN')) return 'badge-exploracion';
-  if(sec.includes('PERFORACIÓN')) return 'badge-perforacion';
-  if(sec.includes('CONTRATISTAS')) return 'badge-contratistas';
-  if(sec.includes('MAQUINARIA')) return 'badge-maquinaria';
-  if(sec.includes('CONSTRUCCIÓN')) return 'badge-construccion';
-  return '';
+// Section badge
+function secBadge(s){
+  if(!s)return'';
+  const map={'MINERÍA METÁLICA':['Metálica','badge-metalica'],'MINERÍA NO METÁLICA':['No Metálica','badge-nometalica'],
+  'EMPRESAS DE EXPLORACIÓN':['Exploración','badge-exploracion'],'PERFORACIÓN MINERA':['Perforación','badge-perforacion'],
+  'CONTRATISTAS MINEROS':['Contratistas','badge-contratistas'],'MAQUINARIA Y EQUIPO':['Maquinaria','badge-maquinaria'],
+  'CONSTRUCCIÓN':['Construcción','badge-construccion']};
+  const m=map[s]||[s,''];
+  return `<span class="badge ${m[1]}">${m[0]}</span>`;
 }
 
-function shortSec(s){
-  return s.replace('MINERÍA ','').replace('EMPRESAS DE ','').replace('PERFORACIÓN MINERA','PERFORACIÓN').replace('CONTRATISTAS MINEROS','CONTRATISTAS').replace('MAQUINARIA Y EQUIPO','MAQUINARIA');
-}
+function fmtMoney(v){if(!v)return'—';return'$'+Number(v).toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function emailLinks(e){if(!e)return'';return e.split(/[|,;]/).map(x=>x.trim()).filter(Boolean).map(x=>`<a href="mailto:${x}">${x}</a>`).join('<br>')}
 
-function emailLinks(e){
-  if(!e) return '';
-  return e.split(/[|\/,]/).map(x=>x.trim()).filter(Boolean).map(x=>`<a class="email-link" href="mailto:${x}">${x}</a>`).join('<br>');
-}
-
-// === GENERATED DATE ===
-const now = new Date();
-const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-document.getElementById('genDate').textContent = `Generado: ${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()} — ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} hrs`;
-
-// === KPI ===
-function renderKPIs(){
-  const total = filtered.length;
-  const enOdoo = filtered.filter(r=>r.en_odoo==='Sí').length;
-  const activo = filtered.filter(r=>r.status==='ACTIVO').length;
-  const cotizado = filtered.filter(r=>r.status==='COTIZADO'||r.cotizaciones>0).length;
-  const noOdoo = filtered.filter(r=>r.en_odoo==='No').length;
-  const rev = filtered.reduce((s,r)=>s+(r.revenue_mxn||0),0);
-
-  const cards = [
-    {label:'Total Empresas',val:total,cls:'highlight'},
-    {label:'En Odoo',val:enOdoo,cls:''},
-    {label:'Activos',val:activo,cls:''},
-    {label:'Cotizadas',val:cotizado,cls:''},
-    {label:'NO en Odoo',val:noOdoo,cls:'red-hl'},
-    {label:'Revenue MXN',val:fmtShort(rev),cls:'highlight'}
-  ];
-
-  document.getElementById('kpiGrid').innerHTML = cards.map(c=>
-    `<div class="kpi ${c.cls}"><div class="kpi-val">${c.val}</div><div class="kpi-label">${c.label}</div></div>`
-  ).join('');
-}
-
-// === FILTERS ===
+// Populate filters
 function populateFilters(){
-  const secs = [...new Set(DATA.map(r=>r.seccion))].sort();
-  const stats = [...new Set(DATA.map(r=>r.status))].sort();
-  const vends = [...new Set(DATA.map(r=>r.vendedor).filter(Boolean))].sort();
-  const fS = document.getElementById('filterSeccion');
-  const fSt = document.getElementById('filterStatus');
-  const fV = document.getElementById('filterVendedor');
-  secs.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;fS.appendChild(o)});
-  stats.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;fSt.appendChild(o)});
-  vends.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;fV.appendChild(o)});
+  const secs=[...new Set(DATA.map(d=>d.seccion).filter(Boolean))].sort();
+  const stats=[...new Set(DATA.map(d=>d.status).filter(Boolean))].sort();
+  const vends=[...new Set(DATA.map(d=>d.vendedor).filter(Boolean))].sort();
+  const fS=document.getElementById('fSeccion');secs.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;fS.appendChild(o)});
+  const fSt=document.getElementById('fStatus');stats.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;fSt.appendChild(o)});
+  const fV=document.getElementById('fVendedor');vends.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;fV.appendChild(o)});
 }
 
-function applyFilters(){
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  const sec = document.getElementById('filterSeccion').value;
-  const stat = document.getElementById('filterStatus').value;
-  const vend = document.getElementById('filterVendedor').value;
+// KPIs
+function renderKPIs(){
+  const total=filtered.length;
+  const enOdoo=filtered.filter(d=>d.en_odoo==='Sí').length;
+  const activo=filtered.filter(d=>d.status==='ACTIVO').length;
+  const cotizadas=filtered.filter(d=>d.cotizaciones>0).length;
+  const noOdoo=filtered.filter(d=>d.en_odoo==='No').length;
+  const rev=filtered.reduce((a,d)=>a+(d.revenue_mxn||0),0);
+  document.getElementById('kpis').innerHTML=`
+    <div class="kpi"><div class="label">Total Empresas</div><div class="value">${total}</div></div>
+    <div class="kpi teal"><div class="label">En Odoo</div><div class="value">${enOdoo}</div></div>
+    <div class="kpi green"><div class="label">ACTIVO</div><div class="value">${activo}</div></div>
+    <div class="kpi yellow"><div class="label">Cotizadas</div><div class="value">${cotizadas}</div></div>
+    <div class="kpi red"><div class="label">NO en Odoo</div><div class="value">${noOdoo}</div></div>
+    <div class="kpi"><div class="label">Revenue MXN</div><div class="value" style="font-size:22px">${fmtMoney(rev)}</div></div>`;
+}
 
-  filtered = DATA.filter(r=>{
-    if(sec && r.seccion!==sec) return false;
-    if(stat && r.status!==stat) return false;
-    if(vend && r.vendedor!==vend) return false;
-    if(q){
-      const hay = [r.empresa,r.mina,r.mineral,r.contacto,r.vendedor,r.email,r.telefono,r.direccion].join(' ').toLowerCase();
-      if(!hay.includes(q)) return false;
-    }
+// Filter
+function applyFilters(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const sec=document.getElementById('fSeccion').value;
+  const st=document.getElementById('fStatus').value;
+  const ve=document.getElementById('fVendedor').value;
+  filtered=DATA.filter(d=>{
+    if(sec&&d.seccion!==sec)return false;
+    if(st&&d.status!==st)return false;
+    if(ve&&d.vendedor!==ve)return false;
+    if(q){const hay=[d.empresa,d.mina,d.mineral,d.contacto,d.vendedor,d.email,d.telefono].join(' ').toLowerCase();if(!hay.includes(q))return false;}
     return true;
   });
-
-  if(sortCol!==null) doSort(sortCol,false);
-  currentPage=1;
-  renderKPIs();
-  renderChips();
-  renderTable();
-}
-
-function clearFilters(){
-  document.getElementById('searchInput').value='';
-  document.getElementById('filterSeccion').value='';
-  document.getElementById('filterStatus').value='';
-  document.getElementById('filterVendedor').value='';
-  applyFilters();
+  if(sortCol)doSort(sortCol,false);
+  currentPage=0;
+  renderKPIs();renderChips();renderTable();
 }
 
 function renderChips(){
-  const chips=[];
-  const sec=document.getElementById('filterSeccion').value;
-  const stat=document.getElementById('filterStatus').value;
-  const vend=document.getElementById('filterVendedor').value;
-  const q=document.getElementById('searchInput').value;
-  if(q) chips.push({label:`Búsqueda: "${q}"`,clear:()=>{document.getElementById('searchInput').value='';applyFilters()}});
-  if(sec) chips.push({label:sec,clear:()=>{document.getElementById('filterSeccion').value='';applyFilters()}});
-  if(stat) chips.push({label:stat,clear:()=>{document.getElementById('filterStatus').value='';applyFilters()}});
-  if(vend) chips.push({label:vend,clear:()=>{document.getElementById('filterVendedor').value='';applyFilters()}});
-  const el=document.getElementById('chips');
-  el.innerHTML=chips.map((_,i)=>`<span class="chip">${chips[i].label} <span class="x" data-i="${i}">✕</span></span>`).join('');
-  el.querySelectorAll('.x').forEach(x=>x.addEventListener('click',e=>{chips[+e.target.dataset.i].clear()}));
+  const c=document.getElementById('activeFilters');c.innerHTML='';
+  const q=document.getElementById('search').value;
+  const sec=document.getElementById('fSeccion').value;
+  const st=document.getElementById('fStatus').value;
+  const ve=document.getElementById('fVendedor').value;
+  if(q)c.innerHTML+=`<span class="chip" onclick="document.getElementById('search').value='';applyFilters()">Búsqueda: "${q}" <span class="x">✕</span></span>`;
+  if(sec)c.innerHTML+=`<span class="chip" onclick="document.getElementById('fSeccion').value='';applyFilters()">Sección: ${sec} <span class="x">✕</span></span>`;
+  if(st)c.innerHTML+=`<span class="chip" onclick="document.getElementById('fStatus').value='';applyFilters()">Status: ${st} <span class="x">✕</span></span>`;
+  if(ve)c.innerHTML+=`<span class="chip" onclick="document.getElementById('fVendedor').value='';applyFilters()">Vendedor: ${ve} <span class="x">✕</span></span>`;
 }
 
-// === SORTING ===
-const COLUMNS = [
-  {key:'status',label:'⚡',sortable:true,type:'text'},
-  {key:'empresa',label:'Empresa',sortable:true,type:'text'},
-  {key:'mina',label:'Mina',sortable:true,type:'text'},
-  {key:'seccion',label:'Sección',sortable:true,type:'text'},
-  {key:'mineral',label:'Mineral',sortable:true,type:'text'},
-  {key:'vendedor',label:'Vendedor',sortable:true,type:'text'},
-  {key:'cotizaciones',label:'Cotiz.',sortable:true,type:'num'},
-  {key:'facturas',label:'Fact.',sortable:true,type:'num'},
-  {key:'revenue_mxn',label:'Revenue MXN',sortable:true,type:'num'},
-  {key:'ultima_actividad',label:'Últ. Actividad',sortable:true,type:'text'},
-  {key:'contacto',label:'Contacto',sortable:true,type:'text'},
-  {key:'telefono',label:'Teléfono',sortable:false,type:'text'},
-  {key:'email',label:'Email',sortable:false,type:'text'}
-];
-
-function doSort(colIdx,toggle=true){
-  if(toggle){
-    if(sortCol===colIdx) sortAsc=!sortAsc;
-    else{sortCol=colIdx;sortAsc=true}
-  }
-  const col=COLUMNS[sortCol];
+// Sort
+function doSort(col,toggle=true){
+  if(toggle){if(sortCol===col)sortAsc=!sortAsc;else{sortCol=col;sortAsc=true;}}
+  const numCols=['cotizaciones','facturas','revenue_mxn','semaforo'];
   filtered.sort((a,b)=>{
-    let va=a[col.key], vb=b[col.key];
-    if(col.type==='num'){va=va||0;vb=vb||0;return sortAsc?va-vb:vb-va}
-    va=(va||'').toString().toLowerCase();vb=(vb||'').toString().toLowerCase();
-    return sortAsc?va.localeCompare(vb):vb.localeCompare(va);
+    let va,vb;
+    if(col==='semaforo'){va=semaforo(a).order;vb=semaforo(b).order;}
+    else{va=a[col];vb=b[col];}
+    if(va==null)va='';if(vb==null)vb='';
+    if(numCols.includes(col)){va=Number(va)||0;vb=Number(vb)||0;return sortAsc?va-vb:vb-va;}
+    if(col==='ultima_actividad'){return sortAsc?String(va).localeCompare(String(vb)):String(vb).localeCompare(String(va));}
+    return sortAsc?String(va).localeCompare(String(vb)):String(vb).localeCompare(String(va));
   });
+  document.querySelectorAll('thead th').forEach(th=>{
+    th.classList.remove('sorted');
+    th.querySelector('.sort-arrow').textContent='';
+  });
+  const th=document.querySelector(`thead th[data-col="${col}"]`);
+  if(th){th.classList.add('sorted');th.querySelector('.sort-arrow').textContent=sortAsc?' ▲':' ▼';}
+  currentPage=0;
+  renderTable();
 }
 
-// === RENDER TABLE ===
-function renderHeader(){
-  const tr=document.createElement('tr');
-  COLUMNS.forEach((c,i)=>{
-    const th=document.createElement('th');
-    th.innerHTML=c.label+(c.sortable?`<span class="sort-arrow">${sortCol===i?(sortAsc?'▲':'▼'):'⇅'}</span>`:'');
-    if(sortCol===i) th.classList.add('sorted');
-    if(c.sortable) th.addEventListener('click',()=>{doSort(i);currentPage=1;renderTable()});
-    tr.appendChild(th);
-  });
-  document.getElementById('thead').innerHTML='';
-  document.getElementById('thead').appendChild(tr);
-}
-
+// Table
 function renderTable(){
-  renderHeader();
-  const start=(currentPage-1)*PAGE_SIZE;
+  const start=currentPage*PAGE_SIZE;
   const page=filtered.slice(start,start+PAGE_SIZE);
   const tbody=document.getElementById('tbody');
   tbody.innerHTML='';
-
-  page.forEach((r,idx)=>{
+  page.forEach((d,i)=>{
+    const s=semaforo(d);
+    const idx=start+i;
+    const noOdooClass=d.status==='NO EN ODOO'?'no-odoo':'';
     const tr=document.createElement('tr');
-    tr.className='clickable'+(r.status==='NO EN ODOO'?' row-noodoo':'');
-    const rid='row-'+start+idx;
-
+    tr.className=noOdooClass;
+    tr.setAttribute('data-idx',idx);
     tr.innerHTML=`
-      <td class="sem">${semaforo(r.status)}</td>
-      <td><strong>${r.empresa}</strong></td>
-      <td>${r.mina||'—'}</td>
-      <td><span class="badge ${badgeClass(r.seccion)}">${shortSec(r.seccion)}</span></td>
-      <td class="wrap">${r.mineral||'—'}</td>
-      <td>${r.vendedor||'—'}</td>
-      <td style="text-align:center">${r.cotizaciones||0}</td>
-      <td style="text-align:center">${r.facturas||0}</td>
-      <td class="revenue">${fmt(r.revenue_mxn)}</td>
-      <td>${r.ultima_actividad||'—'}</td>
-      <td class="wrap">${r.contacto||'—'}</td>
-      <td>${r.telefono||'—'}</td>
-      <td>${emailLinks(r.email)}</td>
-    `;
-
-    tr.addEventListener('click',()=>{
-      const er=document.getElementById(rid);
-      if(er) er.style.display=er.style.display==='none'?'table-row':'none';
-    });
+      <td class="semaforo">${s.icon}</td>
+      <td class="truncate" title="${esc(d.empresa)}">${esc(d.empresa)}</td>
+      <td class="truncate" title="${esc(d.mina)}">${esc(d.mina)||'—'}</td>
+      <td>${secBadge(d.seccion)}</td>
+      <td class="truncate" title="${esc(d.mineral)}">${esc(d.mineral)||'—'}</td>
+      <td>${esc(d.vendedor)||'—'}</td>
+      <td style="text-align:center">${d.cotizaciones||'—'}</td>
+      <td style="text-align:center">${d.facturas||'—'}</td>
+      <td class="revenue">${d.revenue_mxn?fmtMoney(d.revenue_mxn):'—'}</td>
+      <td>${d.ultima_actividad||'—'}</td>
+      <td class="truncate" title="${esc(d.contacto)}">${esc(d.contacto)||'—'}</td>
+      <td style="font-size:11px">${esc(d.telefono)||'—'}</td>
+      <td style="font-size:11px">${emailLinks(d.email)}</td>`;
+    tr.onclick=()=>toggleExpand(idx);
     tbody.appendChild(tr);
 
-    // Expand row
     const etr=document.createElement('tr');
     etr.className='expand-row';
-    etr.id=rid;
-    etr.style.display='none';
-    etr.innerHTML=`<td colspan="${COLUMNS.length}"><div class="expand-content">
-      <div class="el"><strong>📍 Dirección:</strong> ${r.direccion||'—'}</div>
-      <div class="el"><strong>🌐 Web:</strong> ${r.web?`<a href="${r.web.startsWith('http')?r.web:'https://'+r.web}" target="_blank">${r.web}</a>`:'—'}</div>
-      <div class="el"><strong>🆔 Odoo ID:</strong> ${r.odoo_id||'—'}</div>
-      <div class="el"><strong>📊 CRM Opps:</strong> ${r.crm_opps||0}</div>
-      <div class="el"><strong>📌 Estado:</strong> ${r.estado||'—'}</div>
-      <div class="el"><strong>🏷️ En Odoo:</strong> ${r.en_odoo}</div>
+    etr.id='exp-'+idx;
+    etr.innerHTML=`<td colspan="13"><div class="expand-content">
+      <div class="field">📍 Dirección<span>${esc(d.direccion)||'—'}</span></div>
+      <div class="field">🌐 Web<span>${d.web?`<a href="${d.web.startsWith('http')?d.web:'https://'+d.web}" target="_blank">${esc(d.web)}</a>`:'—'}</span></div>
+      <div class="field">🆔 Odoo ID<span>${d.odoo_id||'—'}</span></div>
+      <div class="field">📊 CRM Opps<span>${d.crm_opps||'—'}</span></div>
+      <div class="field">📋 Status<span>${d.status}</span></div>
+      <div class="field">🏢 Estado<span>${esc(d.estado)||'—'}</span></div>
     </div></td>`;
     tbody.appendChild(etr);
   });
-
+  document.getElementById('tableCount').textContent=`${filtered.length} empresas`;
   renderPagination();
 }
 
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function toggleExpand(idx){
+  const el=document.getElementById('exp-'+idx);
+  if(el)el.classList.toggle('open');
+}
+
 function renderPagination(){
-  const total=filtered.length;
-  const pages=Math.ceil(total/PAGE_SIZE)||1;
-  const start=(currentPage-1)*PAGE_SIZE+1;
-  const end=Math.min(currentPage*PAGE_SIZE,total);
-
-  let html=`<span>Mostrando ${total>0?start:0}–${end} de ${total} empresas</span><div class="page-btns">`;
-  html+=`<button ${currentPage<=1?'disabled':''} onclick="goPage(${currentPage-1})">← Anterior</button>`;
-  for(let p=1;p<=pages;p++){
-    html+=`<button class="${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
-  }
-  html+=`<button ${currentPage>=pages?'disabled':''} onclick="goPage(${currentPage+1})">Siguiente →</button>`;
-  html+='</div>';
-  document.getElementById('pagination').innerHTML=html;
+  const totalPages=Math.ceil(filtered.length/PAGE_SIZE);
+  const div=document.getElementById('pagination');
+  if(totalPages<=1){div.innerHTML='';return;}
+  div.innerHTML=`<button ${currentPage===0?'disabled':''} onclick="currentPage--;renderTable()">← Anterior</button>
+    <span>Página <span class="current">${currentPage+1}</span> de ${totalPages}</span>
+    <button ${currentPage>=totalPages-1?'disabled':''} onclick="currentPage++;renderTable()">Siguiente →</button>`;
 }
 
-function goPage(p){
-  currentPage=p;
-  renderTable();
-  document.querySelector('.table-wrap').scrollTo({top:0,behavior:'smooth'});
-}
-
-// === CSV EXPORT ===
+// CSV Export
 function exportCSV(){
-  const headers=['Semáforo','Empresa','Mina','Sección','Mineral','Vendedor','Cotizaciones','Facturas','Revenue MXN','Última Actividad','Contacto','Teléfono','Email','Dirección','Web','Odoo ID','CRM Opps','En Odoo','Estado'];
-  const rows=filtered.map(r=>[
-    r.status,r.empresa,r.mina,r.seccion,r.mineral,r.vendedor,r.cotizaciones,r.facturas,r.revenue_mxn,r.ultima_actividad,r.contacto,r.telefono,r.email,r.direccion,r.web,r.odoo_id,r.crm_opps,r.en_odoo,r.estado
-  ]);
-  let csv='\uFEFF'+headers.join(',')+'\n';
-  rows.forEach(r=>{csv+=r.map(v=>`"${(v===null||v===undefined?'':String(v)).replace(/"/g,'""')}"`).join(',')+'\n'});
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='directorio_minero_mesabi_'+new Date().toISOString().slice(0,10)+'.csv';
-  a.click();
+  const headers=['empresa','mina','seccion','mineral','telefono','email','contacto','direccion','web','estado','vendedor','status','en_odoo','cotizaciones','facturas','crm_opps','revenue_mxn','ultima_actividad','odoo_id'];
+  let csv=headers.join(',')+'\n';
+  filtered.forEach(d=>{csv+=headers.map(h=>{let v=d[h]??'';return'"'+String(v).replace(/"/g,'""')+'"'}).join(',')+'\n';});
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='directorio_minero_mesabi.csv';a.click();
 }
 
-// === INIT ===
-populateFilters();
-applyFilters();
+// Events
+document.getElementById('search').addEventListener('input',applyFilters);
+document.getElementById('fSeccion').addEventListener('change',applyFilters);
+document.getElementById('fStatus').addEventListener('change',applyFilters);
+document.getElementById('fVendedor').addEventListener('change',applyFilters);
+document.getElementById('clearAll').addEventListener('click',()=>{
+  document.getElementById('search').value='';
+  document.getElementById('fSeccion').value='';
+  document.getElementById('fStatus').value='';
+  document.getElementById('fVendedor').value='';
+  applyFilters();
+});
+document.getElementById('csvBtn').addEventListener('click',exportCSV);
+document.querySelectorAll('thead th').forEach(th=>{
+  th.addEventListener('click',()=>doSort(th.dataset.col));
+});
 
-// Event listeners
-document.getElementById('searchInput').addEventListener('input',applyFilters);
-document.getElementById('filterSeccion').addEventListener('change',applyFilters);
-document.getElementById('filterStatus').addEventListener('change',applyFilters);
-document.getElementById('filterVendedor').addEventListener('change',applyFilters);
+// Init
+populateFilters();
+renderKPIs();
+renderTable();
 </script>
 </body>
 </html>
