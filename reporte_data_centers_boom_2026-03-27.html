@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte Ejecutivo — Boom de Data Centers e IA 2026-2030</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@media print{body{background:#fff!important}header{background:#1e3a5f!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.page-break{page-break-before:always}}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f1117;color:#e4e4e7;line-height:1.7}
+header{background:linear-gradient(135deg,#1e3a5f 0%,#0f1117 100%);padding:40px 48px;border-bottom:2px solid #3b82f6}
+header h1{font-size:1.8em;margin-bottom:6px;color:#fff}
+header .subtitle{color:#93c5fd;font-size:1em;margin-bottom:16px}
+header .meta{color:#9ca3af;font-size:.8em}
+.container{max-width:900px;margin:0 auto;padding:32px 24px}
+h2{color:#3b82f6;font-size:1.3em;margin:32px 0 16px;padding-bottom:8px;border-bottom:1px solid #2a2d3a}
+h3{color:#93c5fd;font-size:1.05em;margin:20px 0 10px}
+p{margin-bottom:14px;color:#d1d5db}
+.highlight-box{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(139,92,246,.08));border:1px solid rgba(59,130,246,.3);border-left:4px solid #3b82f6;border-radius:8px;padding:20px 24px;margin:20px 0}
+.highlight-box.green{border-left-color:#22c55e;background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(34,197,94,.03))}
+.highlight-box.orange{border-left-color:#f97316;background:linear-gradient(135deg,rgba(249,115,22,.1),rgba(249,115,22,.03))}
+.highlight-box.red{border-left-color:#ef4444;background:linear-gradient(135deg,rgba(239,68,68,.1),rgba(239,68,68,.03))}
+.highlight-box .big-num{font-size:2em;font-weight:800;color:#3b82f6;line-height:1.2}
+.highlight-box.green .big-num{color:#22c55e}
+.highlight-box.orange .big-num{color:#f97316}
+.highlight-box.red .big-num{color:#ef4444}
+.highlight-box .label{font-size:.85em;color:#9ca3af;margin-top:4px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:20px 0}
+.stat-card{background:#1a1d27;border:1px solid #2a2d3a;border-radius:10px;padding:20px;text-align:center}
+.stat-card .num{font-size:1.8em;font-weight:800;color:#3b82f6}
+.stat-card .lbl{font-size:.75em;color:#9ca3af;text-transform:uppercase;margin-top:4px;letter-spacing:.5px}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.88em}
+th{background:#1a1d27;color:#93c5fd;padding:10px 14px;text-align:left;font-weight:600;text-transform:uppercase;font-size:.75em;letter-spacing:.5px}
+td{padding:10px 14px;border-bottom:1px solid #1f2233;color:#d1d5db}
+tr:hover td{background:rgba(59,130,246,.05)}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.75em;font-weight:600}
+.badge-blue{background:rgba(59,130,246,.15);color:#60a5fa}
+.badge-green{background:rgba(34,197,94,.15);color:#4ade80}
+.badge-yellow{background:rgba(234,179,8,.15);color:#facc15}
+.badge-red{background:rgba(239,68,68,.15);color:#f87171}
+.bar-inline{display:inline-block;height:8px;border-radius:4px;vertical-align:middle;margin-left:8px}
+ul{margin:8px 0 16px 20px}
+li{margin-bottom:6px;color:#d1d5db}
+li strong{color:#e4e4e7}
+.section-icon{font-size:1.2em;margin-right:6px}
+.toc{background:#1a1d27;border:1px solid #2a2d3a;border-radius:10px;padding:20px 28px;margin:24px 0}
+.toc h3{color:#93c5fd;margin-bottom:12px}
+.toc ol{margin-left:20px}
+.toc li{margin-bottom:6px;color:#60a5fa}
+.toc a{color:#60a5fa;text-decoration:none}
+.toc a:hover{text-decoration:underline}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+@media(max-width:700px){.two-col{grid-template-columns:1fr}}
+.footer{text-align:center;padding:32px;color:#6b7280;font-size:.8em;border-top:1px solid #2a2d3a;margin-top:40px}
+.source{font-size:.75em;color:#6b7280;font-style:italic;margin-top:8px}
+.timeline{position:relative;margin:20px 0 20px 20px;padding-left:24px;border-left:2px solid #3b82f6}
+.timeline-item{margin-bottom:16px;position:relative}
+.timeline-item::before{content:'';position:absolute;left:-29px;top:6px;width:10px;height:10px;border-radius:50%;background:#3b82f6}
+.timeline-year{font-weight:700;color:#60a5fa;font-size:.9em}
+.timeline-text{color:#d1d5db;font-size:.88em}
+.callout{background:#1a1d27;border:1px solid #2a2d3a;border-radius:10px;padding:20px;margin:20px 0;text-align:center}
+.callout .emoji{font-size:2em;margin-bottom:8px}
+.callout .text{font-size:1.1em;color:#e4e4e7;font-weight:600}
+.callout .sub{font-size:.85em;color:#9ca3af;margin-top:6px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>🏗️ Boom de Data Centers e Inteligencia Artificial</h1>
+<div class="subtitle">La mayor inversión en infraestructura tecnológica de la historia — y su impacto en energía, metales y la economía global</div>
+<div class="meta">Reporte Ejecutivo — 27 de marzo de 2026 | Preparado para Saturnino Campoy Ramos</div>
+</header>
+
+<div class="container">
+
+<div class="toc">
+<h3>📋 Contenido</h3>
+<ol>
+<li><a href="#resumen">Resumen Ejecutivo</a></li>
+<li><a href="#capex">Inversión por Player — El Club de los $100B</a></li>
+<li><a href="#trayectoria">Trayectoria 2024-2030</a></li>
+<li><a href="#energia">Demanda Energética — El Cuello de Botella</a></li>
+<li><a href="#metales">Impacto en Metales: Plata, Cobre y Más</a></li>
+<li><a href="#eeuu">¿Cómo Hará EE.UU.?</a></li>
+<li><a href="#mundo">¿Cómo Hará el Mundo?</a></li>
+<li><a href="#implicaciones">Implicaciones Estratégicas</a></li>
+</ol>
+</div>
+
+<!-- 1. RESUMEN EJECUTIVO -->
+<h2 id="resumen"><span class="section-icon">📌</span> 1. Resumen Ejecutivo</h2>
+
+<div class="stats-grid">
+<div class="stat-card"><div class="num" style="color:#ef4444">$690B</div><div class="lbl">Capex Hyperscalers 2026</div></div>
+<div class="stat-card"><div class="num" style="color:#f97316">$1.15T</div><div class="lbl">Acumulado 2025-2027</div></div>
+<div class="stat-card"><div class="num" style="color:#eab308">945 TWh</div><div class="lbl">Consumo Eléctrico 2030</div></div>
+<div class="stat-card"><div class="num" style="color:#22c55e">500K ton</div><div class="lbl">Cobre/año para 2030</div></div>
+</div>
+
+<p>Estamos ante la mayor inversión en infraestructura tecnológica de la historia de la humanidad. Los cinco principales hyperscalers (Amazon, Google, Microsoft, Meta y Oracle) van a gastar entre <strong>$660 y $690 mil millones de dólares</strong> en 2026 — casi el doble que en 2025. El 75% va directo a infraestructura de inteligencia artificial.</p>
+
+<p>Esta inversión masiva genera una reacción en cadena que impacta la demanda de energía eléctrica, metales industriales (cobre, plata, aluminio), cadenas de suministro de semiconductores y la geopolítica energética global.</p>
+
+<div class="highlight-box">
+<p><strong>La cifra en perspectiva:</strong> Los $690B de capex de los hyperscalers en 2026 equivalen al PIB completo de Suiza, o a 3.5 veces el PIB de Colombia. Una sola empresa (Amazon) planea gastar más que el presupuesto federal completo de México.</p>
+</div>
+
+<!-- 2. INVERSIÓN POR PLAYER -->
+<h2 id="capex"><span class="section-icon">💰</span> 2. Inversión por Player — El Club de los $100B</h2>
+
+<p>Por primera vez en la historia, cuatro empresas tecnológicas superarán los <strong>$100,000 millones de dólares</strong> en gasto de capital en un solo año. Todas reportan que sus mercados están <em>limitados por oferta, no por demanda</em> — es decir, venderían más si pudieran construir más rápido.</p>
+
+<table>
+<thead>
+<tr><th>Empresa</th><th>Capex 2025</th><th>Capex 2026 (est.)</th><th>Crecimiento</th><th>Dato Clave</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Amazon (AWS)</strong></td>
+<td>$86B</td>
+<td style="color:#ef4444;font-weight:700">$200B</td>
+<td><span class="badge badge-red">+133%</span></td>
+<td>AWS: $142B revenue run rate</td>
+</tr>
+<tr>
+<td><strong>Alphabet (Google)</strong></td>
+<td>$75B</td>
+<td style="color:#f97316;font-weight:700">$175-185B</td>
+<td><span class="badge badge-red">+140%</span></td>
+<td>Backlog cloud: $240B (+55% QoQ)</td>
+</tr>
+<tr>
+<td><strong>Microsoft</strong></td>
+<td>$80B*</td>
+<td style="color:#eab308;font-weight:700">$120B+</td>
+<td><span class="badge badge-yellow">+50%</span></td>
+<td>$80B en pedidos sin poder entregar por falta de energía</td>
+</tr>
+<tr>
+<td><strong>Meta</strong></td>
+<td>$72B</td>
+<td style="color:#eab308;font-weight:700">$115-135B</td>
+<td><span class="badge badge-yellow">+75%</span></td>
+<td>Data center 5GW en Louisiana</td>
+</tr>
+<tr>
+<td><strong>Oracle</strong></td>
+<td>$21B</td>
+<td style="color:#60a5fa;font-weight:700">$50B</td>
+<td><span class="badge badge-red">+136%</span></td>
+<td>$523B en obligaciones pendientes</td>
+</tr>
+<tr style="background:rgba(59,130,246,.08)">
+<td><strong>TOTAL "Big 5"</strong></td>
+<td><strong>$334B</strong></td>
+<td style="color:#ef4444;font-weight:800;font-size:1.1em">$660-690B</td>
+<td><span class="badge badge-red">~100%</span></td>
+<td>Casi se duplica en un año</td>
+</tr>
+</tbody>
+</table>
+<div class="source">*Microsoft FY termina en junio. Cifra anualizada. Fuente: Futurum Research, CNBC, CreditSights, feb 2026</div>
+
+<h3>Proyecto Stargate — La Apuesta Nacional de EE.UU.</h3>
+<p>Adicional a los planes individuales, el proyecto <strong>Stargate</strong> (OpenAI + SoftBank + Oracle + MGX) tiene como objetivo invertir <strong>$500 mil millones</strong> en infraestructura de IA para 2029. Respaldado por la administración Trump como proyecto de interés nacional. Ya tiene 7 GW de capacidad planeada en Texas, Nuevo México y Ohio, con $400B comprometidos en los primeros 3 años.</p>
+
+<!-- 3. TRAYECTORIA -->
+<h2 id="trayectoria"><span class="section-icon">📈</span> 3. Trayectoria de Inversión 2024-2030</h2>
+
+<div class="timeline">
+<div class="timeline-item">
+<div class="timeline-year">2024</div>
+<div class="timeline-text">~$250B en capex hyperscaler. Año del despertar de IA.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-year">2025</div>
+<div class="timeline-text">~$380B (+52%). Los 5 hyperscalers superan $300B por primera vez. Meta supera $70B.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-year">2026</div>
+<div class="timeline-text"><strong>$660-690B (~+80%).</strong> Amazon lidera con $200B. Cada uno de los 4 grandes supera $100B. Año récord absoluto.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-year">2027-2028</div>
+<div class="timeline-text">Goldman Sachs proyecta $1.15 TRILLONES acumulados 2025-2027. Capacidad global de data centers se duplica.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-year">2029-2030</div>
+<div class="timeline-text">Stargate alcanza $500B. Consumo eléctrico global de data centers: 945 TWh. Consolidación del ecosistema.</div>
+</div>
+</div>
+
+<div class="highlight-box orange">
+<div class="big-num">$1.15 TRILLONES</div>
+<div class="label">Inversión acumulada en infraestructura hyperscaler 2025-2027 (Goldman Sachs) — más del doble de los $477B gastados 2022-2024</div>
+</div>
+
+<!-- 4. ENERGÍA -->
+<h2 id="energia"><span class="section-icon">⚡</span> 4. Demanda Energética — El Cuello de Botella #1</h2>
+
+<p>La energía es el recurso más escaso y el principal freno a la expansión. Microsoft tiene <strong>$80 mil millones en pedidos de Azure que no puede entregar</strong> porque no tiene suficiente energía eléctrica.</p>
+
+<div class="two-col">
+<div class="highlight-box">
+<div class="big-num">415 TWh</div>
+<div class="label">Consumo global data centers 2024</div>
+</div>
+<div class="highlight-box red">
+<div class="big-num">945 TWh</div>
+<div class="label">Proyección 2030 (IEA) — se duplica</div>
+</div>
+</div>
+
+<h3>Datos Clave de Consumo Energético</h3>
+<ul>
+<li><strong>EE.UU.:</strong> Data centers pasarán del 4-5% al <strong>9-17% de toda la electricidad nacional</strong> para 2030</li>
+<li><strong>Comparación:</strong> Para 2030, los data centers de EE.UU. consumirán <strong>más electricidad que toda la industria pesada combinada</strong> (cemento, acero, químicos, automóviles)</li>
+<li><strong>Incremento:</strong> EE.UU. necesita agregar <strong>460 TWh</strong> de capacidad de 2023 a 2030</li>
+<li><strong>Potencia:</strong> Para 2028, data centers podrían demandar hasta <strong>130 GW de potencia</strong></li>
+<li><strong>Un hyperscale data center de IA</strong> consume lo que una ciudad de 100,000 habitantes</li>
+<li><strong>60%</strong> del incremento total de carga eléctrica en EE.UU. al 2030 será por data centers</li>
+</ul>
+
+<div class="callout">
+<div class="emoji">🔌</div>
+<div class="text">"Para 2030, los data centers de EE.UU. consumirán más electricidad que toda la industria pesada del país combinada"</div>
+<div class="sub">— Siddharth Singh, IEA / The Atlantic, marzo 2026</div>
+</div>
+
+<!-- 5. METALES -->
+<h2 id="metales"><span class="section-icon">🔩</span> 5. Impacto en Metales: Plata, Cobre y Más</h2>
+
+<h3>🟤 Cobre — El Metal Más Impactado</h3>
+
+<table>
+<thead>
+<tr><th>Métrica</th><th>Valor</th><th>Contexto</th></tr>
+</thead>
+<tbody>
+<tr><td>Cobre por data center convencional</td><td><strong>~500 toneladas</strong></td><td>Cableado, transformadores, cooling</td></tr>
+<tr><td>Cobre por hyperscale AI data center</td><td><strong>hasta 50,000 toneladas</strong></td><td>100x más que un DC convencional</td></tr>
+<tr><td>Demanda anual data centers 2030</td><td><strong>330,000-500,000 ton/año</strong></td><td>Macquarie / Forbes / USFunds</td></tr>
+<tr><td>Reservas identificadas en EE.UU.</td><td>48 millones de toneladas</td><td>Suficientes, pero hay que extraerlas</td></tr>
+<tr><td>Sensibilidad al precio</td><td><strong>Casi nula</strong></td><td>Desarrolladores compran a cualquier precio</td></tr>
+</tbody>
+</table>
+
+<div class="highlight-box green">
+<p><strong>Dato clave:</strong> Los desarrolladores de data centers son <em>indiferentes al precio del cobre</em>. A diferencia de otros sectores donde el alto costo reduce demanda, los hyperscalers compran el metal que necesitan sin importar el precio. Esto cambia la dinámica del mercado de cobre globalmente.</p>
+</div>
+
+<h3>⚪ Plata — "The Next Generation Metal"</h3>
+
+<p>El Silver Institute (diciembre 2025) publicó un reporte de Oxford Economics identificando a la plata como <strong>metal de próxima generación</strong>, impulsado por tres mega-tendencias:</p>
+
+<div class="two-col">
+<div class="stat-card"><div class="num" style="color:#c0c0c0">5,252%</div><div class="lbl">Crecimiento capacidad IT global 2000-2025</div></div>
+<div class="stat-card"><div class="num" style="color:#c0c0c0">29%</div><div class="lbl">Demanda industrial de plata consumida por solar PV (2024)</div></div>
+</div>
+
+<p><strong>Tres motores de demanda de plata al 2030:</strong></p>
+<ul>
+<li><strong>Data Centers / IA:</strong> La conductividad eléctrica y térmica superior de la plata la hace insustituible en servidores, conectores y electrónica de alto rendimiento. El crecimiento de 5,252% en capacidad IT implica crecimiento proporcional en plata.</li>
+<li><strong>Solar Fotovoltaica:</strong> De 11% de la demanda industrial en 2014 a 29% en 2024. La UE busca 700 GW solares para 2030.</li>
+<li><strong>Vehículos Eléctricos:</strong> Un EV usa 67-79% más plata que un vehículo de combustión (25-50 gramos/EV). Los EVs serán 59% de la demanda automotriz de plata para 2031.</li>
+</ul>
+
+<p><strong>El déficit de plata lleva 4 años consecutivos</strong> — la producción minera no cubre la demanda. Esto presiona precios al alza de forma estructural.</p>
+
+<h3>Otros Metales Críticos</h3>
+
+<table>
+<thead>
+<tr><th>Metal</th><th>Uso en Data Centers</th><th>Riesgo de Suministro</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Aluminio</strong></td><td>Disipación de calor, estructuras, racks</td><td><span class="badge badge-yellow">Moderado</span></td></tr>
+<tr><td><strong>Litio</strong></td><td>Baterías UPS de respaldo</td><td><span class="badge badge-yellow">Moderado</span></td></tr>
+<tr><td><strong>Tierras Raras</strong></td><td>Imanes en sistemas de enfriamiento</td><td><span class="badge badge-red">Alto</span> (China controla 60%+)</td></tr>
+<tr><td><strong>Helio</strong></td><td>Enfriamiento de obleas semiconductoras</td><td><span class="badge badge-red">Crítico</span> (Qatar 33%, detenido)</td></tr>
+<tr><td><strong>Bromo</strong></td><td>Grabado de circuitos en chips</td><td><span class="badge badge-red">Alto</span> (Israel/Jordania 65%)</td></tr>
+</tbody>
+</table>
+
+<!-- 6. EE.UU. -->
+<h2 id="eeuu"><span class="section-icon">🇺🇸</span> 6. ¿Cómo Hará EE.UU.?</h2>
+
+<p>EE.UU. concentra <strong>más del 40% de la capacidad global de data centers</strong> y está tomando medidas sin precedentes para asegurar energía:</p>
+
+<h3>Estrategia Energética</h3>
+<ul>
+<li><strong>Nuclear:</strong> Microsoft firmó contrato para reactivar <strong>Three Mile Island</strong>. Amazon compró un campus nuclear en Pennsylvania. Google y Amazon firman con startups de <strong>fusión nuclear</strong>. Reactores modulares pequeños (SMRs) en desarrollo.</li>
+<li><strong>Gas Natural:</strong> Permisos acelerados para plantas de gas. Amazon y Microsoft invirtiendo en generación on-site.</li>
+<li><strong>Renovables:</strong> Contratos masivos de energía solar y eólica (PPAs). Meta construyendo data centers con energía 100% renovable.</li>
+<li><strong>Eficiencia:</strong> Google redujo costos de servir Gemini en 78% en 2025. Chips más eficientes (NVIDIA Blackwell usa 25x menos energía por inferencia que H100).</li>
+</ul>
+
+<h3>Estrategia Industrial</h3>
+<ul>
+<li><strong>CHIPS Act:</strong> $53B en subsidios para manufactura de semiconductores en suelo americano</li>
+<li><strong>Proyecto Stargate:</strong> $500B respaldado como proyecto de interés nacional</li>
+<li><strong>Minería doméstica:</strong> 48M toneladas de reservas de cobre identificadas por USGS — pero hace falta acelerar permisos</li>
+<li><strong>Aranceles:</strong> China enfrenta 25-145% en aranceles, protegiendo el ecosistema doméstico</li>
+</ul>
+
+<div class="highlight-box">
+<p><strong>El dato revelador:</strong> Microsoft tiene $80 mil millones en pedidos de Azure que <em>no puede entregar</em> porque no tiene suficiente energía eléctrica. La demanda supera con creces la capacidad de construcción. El cuello de botella no es el dinero — es la energía y el tiempo de construcción.</p>
+</div>
+
+<!-- 7. EL MUNDO -->
+<h2 id="mundo"><span class="section-icon">🌍</span> 7. ¿Cómo Hará el Mundo?</h2>
+
+<table>
+<thead>
+<tr><th>Región</th><th>Inversión / Estrategia</th><th>Fortaleza</th><th>Debilidad</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>🇺🇸 EE.UU.</strong></td>
+<td>$690B en 2026 (hyperscalers) + $500B Stargate</td>
+<td>Capital, talento, ecosistema completo</td>
+<td>Energía insuficiente, permisos lentos</td>
+</tr>
+<tr>
+<td><strong>🇨🇳 China</strong></td>
+<td>Alibaba $53B/3 años + ByteDance, Tencent, fondos estatales $150B+</td>
+<td>Ejecución rápida, control estatal</td>
+<td>Sanciones chips avanzados, aislamiento</td>
+</tr>
+<tr>
+<td><strong>🇪🇺 Europa</strong></td>
+<td>EU Chips Act €43B. TSMC Dresden, Intel Magdeburgo</td>
+<td>Regulación, estándares</td>
+<td>Rezagada vs EE.UU. y China, burocracia</td>
+</tr>
+<tr>
+<td><strong>🇯🇵 Japón</strong></td>
+<td>TSMC Kumamoto (operando), Rapidus $6.8B (2nm para 2027)</td>
+<td>Expertise en materiales y precision mfg</td>
+<td>Escala limitada vs hyperscalers</td>
+</tr>
+<tr>
+<td><strong>🇸🇦 Medio Oriente</strong></td>
+<td>Fondos soberanos (EAU, Arabia) invirtiendo en IA y data centers</td>
+<td>Capital abundante, energía barata</td>
+<td>Sin ecosistema de talento propio</td>
+</tr>
+<tr>
+<td><strong>🇮🇳 India</strong></td>
+<td>India Chips $10B. Tata Electronics, Micron Gujarat</td>
+<td>Talento en software, demografía</td>
+<td>Infraestructura eléctrica insuficiente</td>
+</tr>
+<tr>
+<td><strong>🇲🇽 México/LATAM</strong></td>
+<td>Oportunidad en nearshoring, edge computing, data centers regionales</td>
+<td>Cercanía a EE.UU., TMEC, energía renovable</td>
+<td>Falta infraestructura eléctrica y regulación</td>
+</tr>
+</tbody>
+</table>
+
+<h3>La Carrera por los Chips</h3>
+<div class="stats-grid">
+<div class="stat-card"><div class="num" style="color:#ef4444">92%</div><div class="lbl">Chips avanzados fabricados por TSMC (Taiwan)</div></div>
+<div class="stat-card"><div class="num" style="color:#f97316">$53B</div><div class="lbl">CHIPS Act EE.UU.</div></div>
+<div class="stat-card"><div class="num" style="color:#eab308">€43B</div><div class="lbl">EU Chips Act</div></div>
+<div class="stat-card"><div class="num" style="color:#22c55e">$150B+</div><div class="lbl">Fondos estatales China</div></div>
+</div>
+
+<!-- 8. IMPLICACIONES -->
+<h2 id="implicaciones"><span class="section-icon">🎯</span> 8. Implicaciones Estratégicas</h2>
+
+<h3>Para la Minería (México y Colombia)</h3>
+<div class="highlight-box green">
+<p>El boom de data centers es <strong>estructuralmente alcista para cobre y plata</strong>. La demanda de cobre para data centers se multiplicará 10x al 2030 (de ~50K a 500K ton/año). La plata tiene déficit de producción por cuarto año consecutivo. Las minas en México y Colombia producen ambos metales — la demanda está asegurada por al menos una década.</p>
+</div>
+
+<h3>Para Eficiencia Energética (SWEM)</h3>
+<div class="highlight-box">
+<p>Los data centers consumen cantidades masivas de energía para enfriamiento (30-40% del consumo total de un DC es cooling). Cualquier mejora en eficiencia de enfriamiento tiene un impacto económico gigante. Los sistemas de ventilación y ahorro energético de SWEM tienen aplicación directa en este mercado.</p>
+</div>
+
+<h3>Para LyM de México / Mesabi</h3>
+<div class="highlight-box orange">
+<p>La construcción de data centers requiere maquinaria pesada para movimiento de tierra, cimentaciones y obra civil. Los 7 GW planeados solo para Stargate implican construcción en Texas, Nuevo México y Ohio — todos mercados accesibles desde México. Cada data center hyperscale requiere 2-4 años de construcción con equipo pesado.</p>
+</div>
+
+<h3>Conclusiones Ejecutivas</h3>
+<ol style="margin:16px 0 16px 20px">
+<li style="margin-bottom:10px"><strong>No es un ciclo — es un cambio estructural.</strong> La inversión en data centers no es temporal. Goldman Sachs proyecta $1.15T en solo 3 años. Es comparable a la revolución eléctrica del siglo XX.</li>
+<li style="margin-bottom:10px"><strong>La energía es el nuevo petróleo.</strong> Quien controle la generación eléctrica controlará el futuro de la IA. Nuclear, gas y renovables compiten por alimentar los data centers.</li>
+<li style="margin-bottom:10px"><strong>Los metales industriales tienen década de demanda asegurada.</strong> Cobre, plata, aluminio — todos con demanda creciente e inelástica. Los hyperscalers compran sin importar el precio.</li>
+<li style="margin-bottom:10px"><strong>México tiene oportunidad real.</strong> TMEC + nearshoring + recursos minerales + energía renovable posicionan a México como beneficiario directo. Pero requiere inversión en infraestructura eléctrica.</li>
+<li style="margin-bottom:10px"><strong>La carrera es global y urgente.</strong> EE.UU. lidera, China persigue, Europa se rezaga. Quien se posicione hoy capturará valor por décadas.</li>
+</ol>
+
+<div class="callout">
+<div class="emoji">💡</div>
+<div class="text">"La pregunta no es si los data centers van a crecer — es quién va a suministrar la energía, los metales y la infraestructura para construirlos"</div>
+</div>
+
+<div class="footer">
+<strong>Fuentes:</strong> IEA Energy and AI Report 2026 · Futurum Research feb 2026 · CNBC · Goldman Sachs · Silver Institute / Oxford Economics dic 2025 · Forbes · Macquarie · Copper Development Association · USGS · CreditSights · The Atlantic mar 2026 · EIA · Bloomberg Intelligence<br><br>
+Preparado por Socio 🤠 para Saturnino Campoy Ramos — 27 de marzo de 2026
+</div>
+
+</div>
+</body>
+</html>
