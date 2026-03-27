@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🇨🇴 LyM Colombia — Universo de Flotas</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f1117;--card:#1a1d27;--border:#2a2d3a;--text:#e4e4e7;--muted:#9ca3af;--accent:#3b82f6;--accent2:#8b5cf6;--green:#22c55e;--yellow:#eab308;--red:#ef4444;--orange:#f97316;--cyan:#06b6d4}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.header{background:linear-gradient(135deg,#1e3a5f,#0f1117);padding:24px 32px;border-bottom:1px solid var(--border)}
+.header h1{font-size:1.6em;margin-bottom:4px}
+.header .sub{color:var(--muted);font-size:.85em}
+.header .stats-row{display:flex;gap:24px;margin-top:12px;flex-wrap:wrap}
+.stat-pill{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 16px;display:flex;align-items:center;gap:8px}
+.stat-pill .num{font-size:1.3em;font-weight:700;color:var(--accent)}
+.stat-pill .lbl{font-size:.75em;color:var(--muted);text-transform:uppercase}
+.container{max-width:1400px;margin:0 auto;padding:16px}
+.filters{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.filters label{font-size:.75em;color:var(--muted);text-transform:uppercase;margin-right:4px}
+.filters select,.filters input{background:#0f1117;color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:.85em}
+.filters input{width:200px}
+.active-filters{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.chip{background:var(--accent);color:#fff;border-radius:20px;padding:3px 12px;font-size:.75em;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.chip:hover{opacity:.8}
+.chip .x{font-weight:700}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;overflow:hidden}
+.card h3{font-size:.9em;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.card.full{grid-column:1/-1}
+/* Bar charts with CSS */
+.bar-chart{display:flex;flex-direction:column;gap:4px}
+.bar-row{display:flex;align-items:center;gap:8px;height:26px;cursor:pointer;border-radius:4px;padding:0 4px}
+.bar-row:hover{background:rgba(255,255,255,.05)}
+.bar-row.active{background:rgba(59,130,246,.15)}
+.bar-label{min-width:140px;font-size:.8em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
+.bar-fill-wrap{flex:1;height:18px;background:#1f2233;border-radius:3px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:3px;transition:width .3s}
+.bar-val{font-size:.8em;min-width:40px;color:var(--muted);text-align:right}
+/* Donut chart CSS */
+.donut-wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.donut{width:160px;height:160px;border-radius:50%;position:relative;flex-shrink:0}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.donut-center .big{font-size:1.5em;font-weight:700;color:var(--text)}
+.donut-center .small{font-size:.7em;color:var(--muted)}
+.legend{display:flex;flex-direction:column;gap:4px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:.8em;cursor:pointer;padding:2px 4px;border-radius:4px}
+.legend-item:hover{background:rgba(255,255,255,.05)}
+.legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+/* Table */
+.table-wrap{overflow-x:auto;max-height:500px;overflow-y:auto}
+table{width:100%;border-collapse:collapse;font-size:.8em}
+th{background:#1f2233;position:sticky;top:0;padding:8px 10px;text-align:left;color:var(--muted);text-transform:uppercase;font-size:.75em;cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{color:var(--text)}
+th .sort-arrow{margin-left:4px;font-size:.7em}
+td{padding:6px 10px;border-bottom:1px solid var(--border);white-space:nowrap}
+tr:hover td{background:rgba(255,255,255,.03)}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.75em;font-weight:600}
+.badge-cat{background:rgba(234,179,8,.15);color:var(--yellow)}
+.badge-kom{background:rgba(59,130,246,.15);color:var(--accent)}
+.badge-san{background:rgba(139,92,246,.15);color:var(--accent2)}
+.badge-hit{background:rgba(239,68,68,.15);color:var(--red)}
+.badge-epi{background:rgba(6,182,212,.15);color:var(--cyan)}
+.badge-other{background:rgba(156,163,175,.15);color:var(--muted)}
+/* Export btn */
+.btn{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:.8em;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.btn:hover{opacity:.85}
+.pager{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:.8em;color:var(--muted)}
+.pager button{background:var(--border);color:var(--text);border:none;border-radius:4px;padding:4px 10px;cursor:pointer;font-size:.8em}
+.pager button:disabled{opacity:.4;cursor:default}
+/* Modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:1000;justify-content:center;align-items:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;max-width:700px;width:90%;max-height:80vh;overflow-y:auto}
+.modal h2{margin-bottom:16px;font-size:1.1em}
+.modal .close{float:right;background:none;border:none;color:var(--muted);font-size:1.3em;cursor:pointer}
+.modal .close:hover{color:var(--text)}
+.modal table{font-size:.8em}
+/* Heatmap */
+.heatmap{display:grid;gap:2px;font-size:.7em}
+.heat-cell{padding:6px 4px;text-align:center;border-radius:3px;cursor:pointer;position:relative}
+.heat-cell:hover{outline:2px solid var(--accent)}
+.heat-cell .tip{display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#000;color:#fff;padding:4px 8px;border-radius:4px;white-space:nowrap;z-index:10;font-size:.85em}
+.heat-cell:hover .tip{display:block}
+.heat-header{font-weight:700;color:var(--muted);background:transparent!important}
+.heat-row-label{text-align:right;padding-right:8px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🇨🇴 LyM Colombia — Universo de Flotas para Campaña de Mercadeo</h1>
+  <div class="sub">Generado: 27 de marzo de 2026 — <span id="genTime"></span> hrs | Fuente: Clientes Adicionales + Relación de Clientes LyM Colombia SAS</div>
+  <div class="stats-row" id="statsRow"></div>
+</div>
+
+<div class="container">
+  <!-- Filters -->
+  <div class="filters">
+    <div><label>Sector</label><select id="fSector"><option value="">Todos</option></select></div>
+    <div><label>Marca</label><select id="fMarca"><option value="">Todas</option></select></div>
+    <div><label>Tipo</label><select id="fTipo"><option value="">Todos</option></select></div>
+    <div><label>Buscar</label><input id="fSearch" placeholder="Cliente, modelo..."></div>
+    <div class="active-filters" id="activeFilters"></div>
+  </div>
+
+  <!-- Charts row 1 -->
+  <div class="grid">
+    <div class="card" id="chartClientes"><h3>📊 Top Clientes por Unidades</h3><div class="bar-chart" id="barsClientes"></div></div>
+    <div class="card" id="chartMarcas"><h3>🏭 Distribución por Marca</h3><div class="donut-wrap" id="donutMarcas"></div></div>
+  </div>
+
+  <!-- Charts row 2 -->
+  <div class="grid">
+    <div class="card"><h3>⛏️ Por Tipo de Equipo</h3><div class="bar-chart" id="barsTipo"></div></div>
+    <div class="card"><h3>🏢 Por Sector</h3><div class="donut-wrap" id="donutSector"></div></div>
+  </div>
+
+  <!-- Heatmap -->
+  <div class="card full" style="margin-bottom:16px">
+    <h3>🔥 Mapa de Calor: Cliente × Marca (unidades)</h3>
+    <div style="overflow-x:auto"><div class="heatmap" id="heatmap"></div></div>
+  </div>
+
+  <!-- Table -->
+  <div class="card full">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 style="margin:0">📋 Detalle Completo de Flota</h3>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="exportCSV()">📥 Exportar CSV</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th onclick="sortTable(0)">Cliente <span class="sort-arrow">⇅</span></th>
+          <th onclick="sortTable(1)">NIT <span class="sort-arrow">⇅</span></th>
+          <th onclick="sortTable(2)">Sector <span class="sort-arrow">⇅</span></th>
+          <th onclick="sortTable(3)">Marca <span class="sort-arrow">⇅</span></th>
+          <th onclick="sortTable(4)">Modelo <span class="sort-arrow">⇅</span></th>
+          <th onclick="sortTable(5)">Tipo <span class="sort-arrow">⇅</span></th>
+          <th onclick="sortTable(6)">Cant. <span class="sort-arrow">⇅</span></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <span id="pagerInfo"></span>
+      <div>
+        <button id="prevBtn" onclick="changePage(-1)">◀ Anterior</button>
+        <button id="nextBtn" onclick="changePage(1)">Siguiente ▶</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Client Detail Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="close" onclick="closeModal()">✕</button>
+    <h2 id="modalTitle"></h2>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+const RAW_DATA = [{"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "CATERPILLAR", "modelo": "777G", "cantidad": 42, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "CATERPILLAR", "modelo": "24G - 24M", "cantidad": 38, "tipo": "Motoniveladoras", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "CATERPILLAR", "modelo": "D11T", "cantidad": 28, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "CATERPILLAR", "modelo": "D9T", "cantidad": 17, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "CATERPILLAR", "modelo": "D10T", "cantidad": 12, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "CATERPILLAR", "modelo": "793D", "cantidad": 259, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "CATERPILLAR", "modelo": "834H", "cantidad": 9, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "CATERPILLAR", "modelo": "854K", "cantidad": 7, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "CATERPILLAR", "modelo": "140K", "cantidad": 15, "tipo": "Motoniveladoras", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "CATERPILLAR", "modelo": "793C", "cantidad": 12, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "KOMATSU", "modelo": "PC8000", "cantidad": 1, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "KOMATSU", "modelo": "830", "cantidad": 12, "tipo": "Cargadores", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "KOMATSU", "modelo": "930", "cantidad": 16, "tipo": "Cargadores", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "HITACHI", "modelo": "EX5500-6", "cantidad": 5, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "HITACHI", "modelo": "EX3600-6", "cantidad": 4, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "HITACHI", "modelo": "EX5600", "cantidad": 3, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "HITACHI", "modelo": "EX5700", "cantidad": 1, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CARBONES DEL CERREJON LIMITED", "nit": "860.069.804-2", "marca": "HITACHI", "modelo": "EH5000", "cantidad": 5, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "ANTIOQUIA GOLD LTD", "nit": "900.217.771-8", "marca": "SANDVIK", "modelo": "ST2G", "cantidad": 5, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ANTIOQUIA GOLD LTD", "nit": "900.217.771-8", "marca": "ATLAS COPCO", "modelo": "ST14", "cantidad": 3, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ANTIOQUIA GOLD LTD", "nit": "900.217.771-8", "marca": "EPIROC", "modelo": "ST18", "cantidad": 1, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ANTIOQUIA GOLD LTD", "nit": "900.217.771-8", "marca": "RESIMEN", "modelo": "", "cantidad": 1, "tipo": "Radiadores/Intercoolers", "sector": "Minería"}, {"cliente": "ANTIOQUIA GOLD LTD", "nit": "900.217.771-8", "marca": "CATERPILLAR", "modelo": "R1500", "cantidad": 2, "tipo": "Cargadores", "sector": "Minería"}, {"cliente": "ANTIOQUIA GOLD LTD", "nit": "900.217.771-8", "marca": "CATERPILLAR", "modelo": "RH1600", "cantidad": 2, "tipo": "Cargadores", "sector": "Minería"}, {"cliente": "ACERIAS PAZ DEL RIO SA", "nit": "860.029.995-1", "marca": "SANDVIK", "modelo": "ST7", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ACERIAS PAZ DEL RIO SA", "nit": "860.029.995-1", "marca": "SANDVIK", "modelo": "LH410", "cantidad": 1, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ACERIAS PAZ DEL RIO SA", "nit": "860.029.995-1", "marca": "SANDVIK", "modelo": "LH307", "cantidad": 1, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ACERIAS PAZ DEL RIO SA", "nit": "860.029.995-1", "marca": "SANDVIK", "modelo": "DT821", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ACERIAS PAZ DEL RIO SA", "nit": "860.029.995-1", "marca": "SANDVIK", "modelo": "DUMPERS", "cantidad": 2, "tipo": "Otro", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "SANDVIK", "modelo": "DD210", "cantidad": 5, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "SANDVIK", "modelo": "LH307", "cantidad": 3, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "SANDVIK", "modelo": "TH315", "cantidad": 3, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "SANDVIK", "modelo": "TH320", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "BOBCAT", "modelo": "S530", "cantidad": 2, "tipo": "Otro", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "OTRO", "modelo": "", "cantidad": 1, "tipo": "Radiadores/Intercoolers", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "TOYOTA", "modelo": "", "cantidad": 2, "tipo": "Radiadores/Intercoolers", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "SANDVIK", "modelo": "LH203", "cantidad": 1, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "EPIROC", "modelo": "ST2G", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "JOY", "modelo": "", "cantidad": 1, "tipo": "Radiadores/Intercoolers", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "SANDVIK", "modelo": "470 T7", "cantidad": 1, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "CATERPILLAR", "modelo": "SD50", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "EPIROC", "modelo": "ST7", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "EPIROC", "modelo": "MT2200", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "EPIROC", "modelo": "S1D", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING SEGOVIA", "nit": "900.306.309-1", "marca": "EPIROC", "modelo": "ST2D", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING MARMATO SAS", "nit": "890.114.642-8", "marca": "SANDVIK", "modelo": "LH307", "cantidad": 5, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING MARMATO SAS", "nit": "890.114.642-8", "marca": "SANDVIK", "modelo": "ST2G", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING MARMATO SAS", "nit": "890.114.642-8", "marca": "SANDVIK", "modelo": "LH410", "cantidad": 3, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING MARMATO SAS", "nit": "890.114.642-8", "marca": "EPIROC", "modelo": "S10S", "cantidad": 1, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "ARIS MINING MARMATO SAS", "nit": "890.114.642-8", "marca": "ATLAS COPCO", "modelo": "282", "cantidad": 2, "tipo": "Otro", "sector": "Minería"}, {"cliente": "MINERA EL ROBLE SA", "nit": "811.000.761-9", "marca": "SANDVIK", "modelo": "LH307", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "MINERA EL ROBLE SA", "nit": "811.000.761-9", "marca": "SANDVIK", "modelo": "LH410", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "MINERA EL ROBLE SA", "nit": "811.000.761-9", "marca": "ATLAS COPCO", "modelo": "JUMBO 282", "cantidad": 3, "tipo": "Otro", "sector": "Minería"}, {"cliente": "MINERA EL ROBLE SA", "nit": "811.000.761-9", "marca": "EPIROC", "modelo": "MT2200", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "MINERA EL ROBLE SA", "nit": "811.000.761-9", "marca": "EPIROC", "modelo": "MT42", "cantidad": 1, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "MINERA EL ROBLE SA", "nit": "811.000.761-9", "marca": "SANDVIK", "modelo": "TH430L", "cantidad": 1, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "SANDVIK", "modelo": "LH410", "cantidad": 5, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "SANDVIK", "modelo": "LH307", "cantidad": 6, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "SANDVIK", "modelo": "TH315", "cantidad": 5, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "SANDVIK", "modelo": "TH320", "cantidad": 5, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "SANDVIK", "modelo": "LH517", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "SANDVIK", "modelo": "TH545", "cantidad": 6, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "SANDVIK", "modelo": "TH551", "cantidad": 5, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "SANDVIK", "modelo": "DL422", "cantidad": 4, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "SANDVIK", "modelo": "TH430", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "CATERPILLAR", "modelo": "745", "cantidad": 1, "tipo": "Otro", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "CATERPILLAR", "modelo": "420", "cantidad": 2, "tipo": "Retroexcavadoras", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "CATERPILLAR", "modelo": "424", "cantidad": 1, "tipo": "Retroexcavadoras", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "CATERPILLAR", "modelo": "320", "cantidad": 2, "tipo": "Excavadoras", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "CATERPILLAR", "modelo": "323", "cantidad": 1, "tipo": "Excavadoras", "sector": "Minería"}, {"cliente": "CONTINENTAL GOLD LIMITED SUCURSAL COLOMBIA", "nit": "900.166.687-7", "marca": "CATERPILLAR", "modelo": "336", "cantidad": 1, "tipo": "Excavadoras", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "D11R", "cantidad": 0, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "D11T", "cantidad": 0, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "24M", "cantidad": 0, "tipo": "Motoniveladoras", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "854K", "cantidad": 0, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "834H", "cantidad": 0, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "140K", "cantidad": 0, "tipo": "Motoniveladoras", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "120K", "cantidad": 0, "tipo": "Motoniveladoras", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "140H", "cantidad": 0, "tipo": "Motoniveladoras", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "140G", "cantidad": 0, "tipo": "Motoniveladoras", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "D9", "cantidad": 0, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "D10", "cantidad": 0, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "RELIANZ MINING SOLUTIONS SAS", "nit": "900.806.600-4", "marca": "CATERPILLAR", "modelo": "793D", "cantidad": 0, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "SOCIEDAD PORTUARIA PUERTO BAHIA SA", "nit": "860.009.873-4", "marca": "TEREX", "modelo": "GHMK6407", "cantidad": 0, "tipo": "Otro", "sector": "Portuario"}, {"cliente": "SOCIEDAD PORTUARIA PUERTO BAHIA SA", "nit": "860.009.873-4", "marca": "OTRO", "modelo": "", "cantidad": 2, "tipo": "Radiadores/Intercoolers", "sector": "Portuario"}, {"cliente": "EXCAVACIONES Y PROYECTOS DE COLOMBIA SAS", "nit": "900.149.606-9", "marca": "KOMATSU", "modelo": "WA600", "cantidad": 0, "tipo": "Cargadores", "sector": "Construcción"}, {"cliente": "EXCAVACIONES Y PROYECTOS DE COLOMBIA SAS", "nit": "900.149.606-9", "marca": "CATERPILLAR", "modelo": "980", "cantidad": 0, "tipo": "Cargadores", "sector": "Construcción"}, {"cliente": "EXCAVACIONES Y PROYECTOS DE COLOMBIA SAS", "nit": "900.149.606-9", "marca": "CATERPILLAR", "modelo": "988", "cantidad": 0, "tipo": "Cargadores", "sector": "Construcción"}, {"cliente": "EXCAVACIONES Y PROYECTOS DE COLOMBIA SAS", "nit": "900.149.606-9", "marca": "KOMATSU", "modelo": "830", "cantidad": 0, "tipo": "Cargadores", "sector": "Construcción"}, {"cliente": "EXCAVACIONES Y PROYECTOS DE COLOMBIA SAS", "nit": "900.149.606-9", "marca": "KOMATSU", "modelo": "730", "cantidad": 0, "tipo": "Cargadores", "sector": "Construcción"}, {"cliente": "EXCAVACIONES Y PROYECTOS DE COLOMBIA SAS", "nit": "900.149.606-9", "marca": "CATERPILLAR", "modelo": "834H", "cantidad": 0, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "EXCAVACIONES Y PROYECTOS DE COLOMBIA SAS", "nit": "900.149.606-9", "marca": "CATERPILLAR", "modelo": "D11", "cantidad": 0, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "EXCAVACIONES Y PROYECTOS DE COLOMBIA SAS", "nit": "900.149.606-9", "marca": "CATERPILLAR", "modelo": "D9", "cantidad": 0, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "EXCAVACIONES Y PROYECTOS DE COLOMBIA SAS", "nit": "900.149.606-9", "marca": "CATERPILLAR", "modelo": "D10", "cantidad": 0, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "OLEOFLORES SAS", "nit": "890.102.110-1", "marca": "CATERPILLAR", "modelo": "3512", "cantidad": 2, "tipo": "Generadores", "sector": "Agroindustria"}, {"cliente": "OLEOFLORES SAS", "nit": "890.102.110-1", "marca": "KOMATSU", "modelo": "WA380", "cantidad": 1, "tipo": "Cargadores", "sector": "Agroindustria"}, {"cliente": "OLEOFLORES SAS", "nit": "890.102.110-1", "marca": "CATERPILLAR", "modelo": "834H", "cantidad": 1, "tipo": "Tractores/Dozers", "sector": "Agroindustria"}, {"cliente": "CHM MINERIA SAS", "nit": "900.612.501-1", "marca": "HITACHI", "modelo": "5500-6", "cantidad": 5, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CHM MINERIA SAS", "nit": "900.612.501-1", "marca": "HITACHI", "modelo": "5600-6", "cantidad": 6, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CHM MINERIA SAS", "nit": "900.612.501-1", "marca": "HITACHI", "modelo": "3600-6", "cantidad": 5, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CHM MINERIA SAS", "nit": "900.612.501-1", "marca": "HITACHI", "modelo": "1900-6", "cantidad": 6, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "KOMATSU COLOMBIA SAS", "nit": "830.060.331-0", "marca": "KOMATSU", "modelo": "930", "cantidad": 6, "tipo": "Cargadores", "sector": "Distribuidor OEM"}, {"cliente": "KOMATSU COLOMBIA SAS", "nit": "830.060.331-0", "marca": "KOMATSU", "modelo": "830", "cantidad": 5, "tipo": "Cargadores", "sector": "Distribuidor OEM"}, {"cliente": "KOMATSU COLOMBIA SAS", "nit": "830.060.331-0", "marca": "KOMATSU", "modelo": "WA600", "cantidad": 6, "tipo": "Cargadores", "sector": "Distribuidor OEM"}, {"cliente": "KOMATSU COLOMBIA SAS", "nit": "830.060.331-0", "marca": "KOMATSU", "modelo": "WA320", "cantidad": 5, "tipo": "Cargadores", "sector": "Distribuidor OEM"}, {"cliente": "KOMATSU COLOMBIA SAS", "nit": "830.060.331-0", "marca": "KOMATSU", "modelo": "WA380", "cantidad": 6, "tipo": "Cargadores", "sector": "Distribuidor OEM"}, {"cliente": "KOMATSU COLOMBIA SAS", "nit": "830.060.331-0", "marca": "KOMATSU", "modelo": "455", "cantidad": 5, "tipo": "Cargadores", "sector": "Distribuidor OEM"}, {"cliente": "KOMATSU COLOMBIA SAS", "nit": "830.060.331-0", "marca": "KOMATSU", "modelo": "485", "cantidad": 6, "tipo": "Cargadores", "sector": "Distribuidor OEM"}, {"cliente": "KOMATSU COLOMBIA SAS", "nit": "830.060.331-0", "marca": "KOMATSU", "modelo": "WA1900", "cantidad": 6, "tipo": "Cargadores", "sector": "Distribuidor OEM"}, {"cliente": "KOMATSU COLOMBIA SAS", "nit": "830.060.331-0", "marca": "KOMATSU", "modelo": "WA1200", "cantidad": 5, "tipo": "Motoniveladoras", "sector": "Distribuidor OEM"}, {"cliente": "CONSTRUCTORA ARIGUANI SAS", "nit": "900.475.730-1", "marca": "CATERPILLAR", "modelo": "D11", "cantidad": 7, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "CONSTRUCTORA ARIGUANI SAS", "nit": "900.475.730-1", "marca": "CATERPILLAR", "modelo": "D9", "cantidad": 8, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "CONSTRUCTORA ARIGUANI SAS", "nit": "900.475.730-1", "marca": "CATERPILLAR", "modelo": "D10", "cantidad": 12, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "CONSTRUCTORA ARIGUANI SAS", "nit": "900.475.730-1", "marca": "CATERPILLAR", "modelo": "320", "cantidad": 5, "tipo": "Excavadoras", "sector": "Construcción"}, {"cliente": "CONSTRUCTORA ARIGUANI SAS", "nit": "900.475.730-1", "marca": "CATERPILLAR", "modelo": "330", "cantidad": 2, "tipo": "Excavadoras", "sector": "Construcción"}, {"cliente": "CONSTRUCTORA ARIGUANI SAS", "nit": "900.475.730-1", "marca": "CATERPILLAR", "modelo": "CAT140", "cantidad": 2, "tipo": "Motoniveladoras", "sector": "Construcción"}, {"cliente": "CONSTRUCTORA ARIGUANI SAS", "nit": "900.475.730-1", "marca": "CATERPILLAR", "modelo": "120", "cantidad": 5, "tipo": "Motoniveladoras", "sector": "Construcción"}, {"cliente": "CONSTRUCTORA ARIGUANI SAS", "nit": "900.475.730-1", "marca": "CATERPILLAR", "modelo": "120H", "cantidad": 5, "tipo": "Motoniveladoras", "sector": "Construcción"}, {"cliente": "CONSTRUCTORA ARIGUANI SAS", "nit": "900.475.730-1", "marca": "CATERPILLAR", "modelo": "CAT416", "cantidad": 8, "tipo": "Retroexcavadoras", "sector": "Construcción"}, {"cliente": "CONSTRUCTORA ARIGUANI SAS", "nit": "900.475.730-1", "marca": "CATERPILLAR", "modelo": "CAT420", "cantidad": 9, "tipo": "Retroexcavadoras", "sector": "Construcción"}, {"cliente": "KLUANE COLOMBIA SAS", "nit": "900.193.076-1", "marca": "SANDVIK", "modelo": "SCX DE700", "cantidad": 5, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "KLUANE COLOMBIA SAS", "nit": "900.193.076-1", "marca": "SANDVIK", "modelo": "SCX DE702", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "KLUANE COLOMBIA SAS", "nit": "900.193.076-1", "marca": "SANDVIK", "modelo": "DE710", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "KLUANE COLOMBIA SAS", "nit": "900.193.076-1", "marca": "SANDVIK", "modelo": "DCC1200", "cantidad": 2, "tipo": "Minería Subterránea", "sector": "Minería"}, {"cliente": "SP INGENIEROS", "nit": "890.932.424-8", "marca": "CATERPILLAR", "modelo": "320", "cantidad": 5, "tipo": "Excavadoras", "sector": "Construcción"}, {"cliente": "SP INGENIEROS", "nit": "890.932.424-8", "marca": "CATERPILLAR", "modelo": "D11", "cantidad": 4, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "SP INGENIEROS", "nit": "890.932.424-8", "marca": "CATERPILLAR", "modelo": "D8", "cantidad": 2, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "SP INGENIEROS", "nit": "890.932.424-8", "marca": "CATERPILLAR", "modelo": "D6", "cantidad": 2, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "SP INGENIEROS", "nit": "890.932.424-8", "marca": "CATERPILLAR", "modelo": "D4", "cantidad": 1, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "SP INGENIEROS", "nit": "890.932.424-8", "marca": "CATERPILLAR", "modelo": "24M", "cantidad": 2, "tipo": "Motoniveladoras", "sector": "Construcción"}, {"cliente": "SP INGENIEROS", "nit": "890.932.424-8", "marca": "CATERPILLAR", "modelo": "24G", "cantidad": 2, "tipo": "Motoniveladoras", "sector": "Construcción"}, {"cliente": "SP INGENIEROS", "nit": "890.932.424-8", "marca": "KOMATSU", "modelo": "WA600", "cantidad": 1, "tipo": "Cargadores", "sector": "Construcción"}, {"cliente": "SP INGENIEROS", "nit": "890.932.424-8", "marca": "KOMATSU", "modelo": "WA320", "cantidad": 1, "tipo": "Cargadores", "sector": "Construcción"}, {"cliente": "SP INGENIEROS", "nit": "890.932.424-8", "marca": "CATERPILLAR", "modelo": "416", "cantidad": 1, "tipo": "Retroexcavadoras", "sector": "Construcción"}, {"cliente": "SP INGENIEROS", "nit": "890.932.424-8", "marca": "CATERPILLAR", "modelo": "420", "cantidad": 1, "tipo": "Retroexcavadoras", "sector": "Construcción"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "CATERPILLAR", "modelo": "777G", "cantidad": 44, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "CATERPILLAR", "modelo": "24G - 24M", "cantidad": 40, "tipo": "Motoniveladoras", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "CATERPILLAR", "modelo": "D11T", "cantidad": 30, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "CATERPILLAR", "modelo": "D9T", "cantidad": 19, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "CATERPILLAR", "modelo": "D10T", "cantidad": 14, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "CATERPILLAR", "modelo": "793D", "cantidad": 261, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "CATERPILLAR", "modelo": "834H", "cantidad": 11, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "CATERPILLAR", "modelo": "854K", "cantidad": 9, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "CATERPILLAR", "modelo": "140K", "cantidad": 17, "tipo": "Motoniveladoras", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "CATERPILLAR", "modelo": "793C", "cantidad": 14, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "KOMATSU", "modelo": "PC8000", "cantidad": 3, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "KOMATSU", "modelo": "830", "cantidad": 14, "tipo": "Cargadores", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "KOMATSU", "modelo": "930", "cantidad": 18, "tipo": "Cargadores", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "HITACHI", "modelo": "EX5500-6", "cantidad": 7, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "HITACHI", "modelo": "EX3600-6", "cantidad": 6, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "HITACHI", "modelo": "EX5600", "cantidad": 5, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "HITACHI", "modelo": "EX5700", "cantidad": 3, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "DRUMMOND LTD", "nit": "800.021.308-5", "marca": "HITACHI", "modelo": "EH5000", "cantidad": 7, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "TRIPLE A", "nit": "800.135.913-1", "marca": "KOMATSU", "modelo": "", "cantidad": 4, "tipo": "Radiadores/Intercoolers", "sector": "Servicios Públicos"}, {"cliente": "TRIPLE A", "nit": "800.135.913-1", "marca": "CATERPILLAR", "modelo": "", "cantidad": 3, "tipo": "Radiadores/Intercoolers", "sector": "Servicios Públicos"}, {"cliente": "TRIPLE A", "nit": "800.135.913-1", "marca": "INTERNATIONAL", "modelo": "", "cantidad": 40, "tipo": "Radiadores/Intercoolers", "sector": "Servicios Públicos"}, {"cliente": "TRIPLE A", "nit": "800.135.913-1", "marca": "OTRO", "modelo": "", "cantidad": 2, "tipo": "Radiadores/Intercoolers", "sector": "Servicios Públicos"}, {"cliente": "TRIPLE A", "nit": "800.135.913-1", "marca": "CHEVROLET", "modelo": "", "cantidad": 4, "tipo": "Radiadores/Intercoolers", "sector": "Servicios Públicos"}, {"cliente": "CEEROMATOSO", "nit": "860.069.378-6", "marca": "CATERPILLAR", "modelo": "777G", "cantidad": 20, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CEEROMATOSO", "nit": "860.069.378-6", "marca": "CATERPILLAR", "modelo": "777F", "cantidad": 18, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CEEROMATOSO", "nit": "860.069.378-6", "marca": "CATERPILLAR", "modelo": "834H", "cantidad": 5, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "CEEROMATOSO", "nit": "860.069.378-6", "marca": "CATERPILLAR", "modelo": "854G", "cantidad": 3, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "CEEROMATOSO", "nit": "860.069.378-6", "marca": "HITACHI", "modelo": "EX1900-6", "cantidad": 4, "tipo": "Camiones/Palas Mineras", "sector": "Minería"}, {"cliente": "CEEROMATOSO", "nit": "860.069.378-6", "marca": "KOMATSU", "modelo": "930", "cantidad": 27, "tipo": "Cargadores", "sector": "Minería"}, {"cliente": "CEEROMATOSO", "nit": "860.069.378-6", "marca": "KOMATSU", "modelo": "830", "cantidad": 18, "tipo": "Cargadores", "sector": "Minería"}, {"cliente": "CEEROMATOSO", "nit": "860.069.378-6", "marca": "CATERPILLAR", "modelo": "D11", "cantidad": 5, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "CEEROMATOSO", "nit": "860.069.378-6", "marca": "CATERPILLAR", "modelo": "D10", "cantidad": 10, "tipo": "Tractores/Dozers", "sector": "Minería"}, {"cliente": "GRUPO ORTIZ", "nit": "900.765.469-8", "marca": "CATERPILLAR", "modelo": "D10", "cantidad": 5, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "GRUPO ORTIZ", "nit": "900.765.469-8", "marca": "CATERPILLAR", "modelo": "D6", "cantidad": 10, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "GRUPO ORTIZ", "nit": "900.765.469-8", "marca": "CATERPILLAR", "modelo": "320", "cantidad": 6, "tipo": "Excavadoras", "sector": "Construcción"}, {"cliente": "GRUPO ORTIZ", "nit": "900.765.469-8", "marca": "CATERPILLAR", "modelo": "336", "cantidad": 2, "tipo": "Excavadoras", "sector": "Construcción"}, {"cliente": "GRUPO ORTIZ", "nit": "900.765.469-8", "marca": "CATERPILLAR", "modelo": "D8", "cantidad": 2, "tipo": "Tractores/Dozers", "sector": "Construcción"}, {"cliente": "GRUPO ORTIZ", "nit": "900.765.469-8", "marca": "KOMATSU", "modelo": "WB93R-8", "cantidad": 1, "tipo": "Excavadoras", "sector": "Construcción"}, {"cliente": "GRUPO ORTIZ", "nit": "900.765.469-8", "marca": "JCB", "modelo": "4CX", "cantidad": 6, "tipo": "Retroexcavadoras", "sector": "Construcción"}, {"cliente": "GRUPO ORTIZ", "nit": "900.765.469-8", "marca": "VOLVO", "modelo": "EC210", "cantidad": 5, "tipo": "Excavadoras", "sector": "Construcción"}, {"cliente": "GRUPO ORTIZ", "nit": "900.765.469-8", "marca": "LIEBHERR", "modelo": "A922", "cantidad": 4, "tipo": "Excavadoras", "sector": "Construcción"}, {"cliente": "GRUPO ORTIZ", "nit": "900.765.469-8", "marca": "CATERPILLAR", "modelo": "140K", "cantidad": 2, "tipo": "Motoniveladoras", "sector": "Construcción"}, {"cliente": "GRUPO ORTIZ", "nit": "900.765.469-8", "marca": "CATERPILLAR", "modelo": "140H", "cantidad": 1, "tipo": "Motoniveladoras", "sector": "Construcción"}, {"cliente": "POSTOBON", "nit": "890.903.939-5", "marca": "OTRO", "modelo": "", "cantidad": 0, "tipo": "Radiadores/Intercoolers", "sector": "Alimentos/Bebidas"}, {"cliente": "ULTRACEM SAS", "nit": "900.570.964-4", "marca": "CATERPILLAR", "modelo": "D8", "cantidad": 8, "tipo": "Tractores/Dozers", "sector": "Cemento/Materiales"}, {"cliente": "ULTRACEM SAS", "nit": "900.570.964-4", "marca": "CATERPILLAR", "modelo": "D6", "cantidad": 9, "tipo": "Tractores/Dozers", "sector": "Cemento/Materiales"}, {"cliente": "ULTRACEM SAS", "nit": "900.570.964-4", "marca": "CATERPILLAR", "modelo": "834H", "cantidad": 10, "tipo": "Tractores/Dozers", "sector": "Cemento/Materiales"}, {"cliente": "ULTRACEM SAS", "nit": "900.570.964-4", "marca": "CATERPILLAR", "modelo": "854K", "cantidad": 2, "tipo": "Tractores/Dozers", "sector": "Cemento/Materiales"}, {"cliente": "ULTRACEM SAS", "nit": "900.570.964-4", "marca": "CATERPILLAR", "modelo": "3512", "cantidad": 5, "tipo": "Generadores", "sector": "Cemento/Materiales"}, {"cliente": "ULTRACEM SAS", "nit": "900.570.964-4", "marca": "LIEBHERR", "modelo": "T264", "cantidad": 1, "tipo": "Camiones/Palas Mineras", "sector": "Cemento/Materiales"}, {"cliente": "ULTRACEM SAS", "nit": "900.570.964-4", "marca": "LIEBHERR", "modelo": "T284", "cantidad": 1, "tipo": "Camiones/Palas Mineras", "sector": "Cemento/Materiales"}];
+
+// State
+let filters = { sector:'', marca:'', tipo:'', search:'' };
+let sortCol = 6, sortAsc = false;
+let page = 0;
+const PAGE_SIZE = 50;
+
+function init() {
+  document.getElementById('genTime').textContent = new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  
+  // Populate filter dropdowns
+  const sectors = [...new Set(RAW_DATA.map(r=>r.sector))].sort();
+  const marcas = [...new Set(RAW_DATA.map(r=>r.marca))].sort();
+  const tipos = [...new Set(RAW_DATA.map(r=>r.tipo))].sort();
+  
+  sectors.forEach(s => addOption('fSector',s));
+  marcas.forEach(m => addOption('fMarca',m));
+  tipos.forEach(t => addOption('fTipo',t));
+  
+  document.getElementById('fSector').onchange = e => { filters.sector=e.target.value; render(); };
+  document.getElementById('fMarca').onchange = e => { filters.marca=e.target.value; render(); };
+  document.getElementById('fTipo').onchange = e => { filters.tipo=e.target.value; render(); };
+  document.getElementById('fSearch').oninput = e => { filters.search=e.target.value.toLowerCase(); render(); };
+  
+  render();
+}
+
+function addOption(id,val) {
+  const o = document.createElement('option');
+  o.value=val; o.textContent=val;
+  document.getElementById(id).appendChild(o);
+}
+
+function filtered() {
+  return RAW_DATA.filter(r => {
+    if (filters.sector && r.sector !== filters.sector) return false;
+    if (filters.marca && r.marca !== filters.marca) return false;
+    if (filters.tipo && r.tipo !== filters.tipo) return false;
+    if (filters.search) {
+      const s = filters.search;
+      if (!(r.cliente.toLowerCase().includes(s) || r.modelo.toLowerCase().includes(s) || 
+            r.marca.toLowerCase().includes(s) || r.nit.includes(s) || r.sector.toLowerCase().includes(s))) return false;
+    }
+    return true;
+  });
+}
+
+function render() {
+  const data = filtered();
+  page = 0;
+  renderStats(data);
+  renderChips();
+  renderClientBars(data);
+  renderBrandDonut(data);
+  renderTypeBars(data);
+  renderSectorDonut(data);
+  renderHeatmap(data);
+  renderTable(data);
+}
+
+function renderStats(data) {
+  const clients = new Set(data.map(r=>r.cliente)).size;
+  const units = data.reduce((s,r)=>s+r.cantidad,0);
+  const brands = new Set(data.map(r=>r.marca)).size;
+  const models = new Set(data.filter(r=>r.modelo).map(r=>r.modelo)).size;
+  
+  document.getElementById('statsRow').innerHTML = [
+    {n:clients,l:'Clientes',c:'var(--accent)'},
+    {n:units.toLocaleString(),l:'Unidades',c:'var(--green)'},
+    {n:brands,l:'Marcas',c:'var(--accent2)'},
+    {n:models,l:'Modelos',c:'var(--orange)'},
+    {n:data.length,l:'Registros',c:'var(--cyan)'}
+  ].map(s=>`<div class="stat-pill"><div><div class="num" style="color:${s.c}">${s.n}</div><div class="lbl">${s.l}</div></div></div>`).join('');
+}
+
+function renderChips() {
+  const el = document.getElementById('activeFilters');
+  let html = '';
+  if(filters.sector) html += chip('Sector: '+filters.sector,'sector');
+  if(filters.marca) html += chip('Marca: '+filters.marca,'marca');
+  if(filters.tipo) html += chip('Tipo: '+filters.tipo,'tipo');
+  if(filters.search) html += chip('Buscar: '+filters.search,'search');
+  el.innerHTML = html;
+}
+
+function chip(text,key) {
+  return `<span class="chip" onclick="clearFilter('${key}')">${text} <span class="x">✕</span></span>`;
+}
+
+function clearFilter(key) {
+  filters[key] = '';
+  if(key==='sector') document.getElementById('fSector').value='';
+  if(key==='marca') document.getElementById('fMarca').value='';
+  if(key==='tipo') document.getElementById('fTipo').value='';
+  if(key==='search') document.getElementById('fSearch').value='';
+  render();
+}
+
+function aggregate(data, key) {
+  const map = {};
+  data.forEach(r => { map[r[key]] = (map[r[key]]||0) + r.cantidad; });
+  return Object.entries(map).sort((a,b)=>b[1]-a[1]);
+}
+
+const COLORS = ['#3b82f6','#eab308','#8b5cf6','#ef4444','#22c55e','#f97316','#06b6d4','#ec4899','#84cc16','#a855f7','#14b8a6','#f43f5e','#6366f1','#d946ef','#0ea5e9','#fbbf24','#10b981'];
+
+function renderClientBars(data) {
+  const agg = aggregate(data,'cliente').slice(0,12);
+  const max = agg[0]?agg[0][1]:1;
+  document.getElementById('barsClientes').innerHTML = agg.map(([name,val],i) => {
+    const pct = (val/max*100).toFixed(1);
+    const color = COLORS[i % COLORS.length];
+    return `<div class="bar-row ${filters.search===name.toLowerCase()?'active':''}" onclick="showClientModal('${name.replace(/'/g,"\\'")}')">
+      <div class="bar-label" title="${name}">${name.length>22?name.slice(0,20)+'…':name}</div>
+      <div class="bar-fill-wrap"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
+      <div class="bar-val">${val}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderBrandDonut(data) {
+  const agg = aggregate(data,'marca');
+  const total = agg.reduce((s,a)=>s+a[1],0) || 1;
+  
+  // Build conic gradient
+  let gradParts = [], cumPct = 0;
+  const items = agg.slice(0,10);
+  const otherVal = agg.slice(10).reduce((s,a)=>s+a[1],0);
+  if(otherVal > 0) items.push(['Otros',otherVal]);
+  
+  items.forEach(([name,val],i) => {
+    const pct = val/total*100;
+    const color = COLORS[i % COLORS.length];
+    gradParts.push(`${color} ${cumPct}% ${cumPct+pct}%`);
+    cumPct += pct;
+  });
+  
+  const donutHTML = `<div class="donut" style="background:conic-gradient(${gradParts.join(',')})">
+    <div class="donut-center"><div class="big">${total.toLocaleString()}</div><div class="small">unidades</div></div>
+  </div>`;
+  
+  const legendHTML = `<div class="legend">${items.map(([name,val],i) => {
+    const pct = (val/total*100).toFixed(1);
+    return `<div class="legend-item" onclick="setFilter('marca','${name==='Otros'?'':name}')">
+      <div class="legend-dot" style="background:${COLORS[i%COLORS.length]}"></div>
+      <span>${name}: ${val} (${pct}%)</span>
+    </div>`;
+  }).join('')}</div>`;
+  
+  document.getElementById('donutMarcas').innerHTML = donutHTML + legendHTML;
+}
+
+function renderSectorDonut(data) {
+  const agg = aggregate(data,'sector');
+  const total = agg.reduce((s,a)=>s+a[1],0) || 1;
+  
+  let gradParts = [], cumPct = 0;
+  agg.forEach(([name,val],i) => {
+    const pct = val/total*100;
+    const color = COLORS[i % COLORS.length];
+    gradParts.push(`${color} ${cumPct}% ${cumPct+pct}%`);
+    cumPct += pct;
+  });
+  
+  const donutHTML = `<div class="donut" style="background:conic-gradient(${gradParts.join(',')})">
+    <div class="donut-center"><div class="big">${agg.length}</div><div class="small">sectores</div></div>
+  </div>`;
+  
+  const legendHTML = `<div class="legend">${agg.map(([name,val],i) => {
+    const pct = (val/total*100).toFixed(1);
+    return `<div class="legend-item" onclick="setFilter('sector','${name}')">
+      <div class="legend-dot" style="background:${COLORS[i%COLORS.length]}"></div>
+      <span>${name}: ${val} (${pct}%)</span>
+    </div>`;
+  }).join('')}</div>`;
+  
+  document.getElementById('donutSector').innerHTML = donutHTML + legendHTML;
+}
+
+function renderTypeBars(data) {
+  const agg = aggregate(data,'tipo');
+  const max = agg[0]?agg[0][1]:1;
+  document.getElementById('barsTipo').innerHTML = agg.map(([name,val],i) => {
+    const pct = (val/max*100).toFixed(1);
+    const color = COLORS[i % COLORS.length];
+    return `<div class="bar-row" onclick="setFilter('tipo','${name}')">
+      <div class="bar-label" title="${name}">${name}</div>
+      <div class="bar-fill-wrap"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
+      <div class="bar-val">${val}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderHeatmap(data) {
+  // Client x Brand heatmap
+  const clients = aggregate(data,'cliente').slice(0,15).map(a=>a[0]);
+  const brands = aggregate(data,'marca').slice(0,8).map(a=>a[0]);
+  
+  // Build matrix
+  const matrix = {};
+  data.forEach(r => {
+    if(!clients.includes(r.cliente) || !brands.includes(r.marca)) return;
+    const key = r.cliente+'|'+r.marca;
+    matrix[key] = (matrix[key]||0) + r.cantidad;
+  });
+  
+  const maxVal = Math.max(...Object.values(matrix), 1);
+  const cols = brands.length + 1;
+  
+  let html = `<div class="heat-header heat-row-label" style="grid-column:1"></div>`;
+  brands.forEach(b => { html += `<div class="heat-header" style="font-size:.7em;text-align:center">${b.length>8?b.slice(0,7)+'…':b}</div>`; });
+  
+  clients.forEach(client => {
+    html += `<div class="heat-row-label" title="${client}">${client.length>18?client.slice(0,16)+'…':client}</div>`;
+    brands.forEach(brand => {
+      const val = matrix[client+'|'+brand] || 0;
+      const intensity = val > 0 ? Math.max(0.15, val/maxVal) : 0;
+      const bg = val > 0 ? `rgba(59,130,246,${intensity})` : 'rgba(255,255,255,.02)';
+      html += `<div class="heat-cell" style="background:${bg};color:${intensity>.5?'#fff':'var(--muted)'}" onclick="showClientModal('${client.replace(/'/g,"\\'")}')">
+        ${val||'·'}
+        <span class="tip">${client} × ${brand}: ${val} unidades</span>
+      </div>`;
+    });
+  });
+  
+  const grid = document.getElementById('heatmap');
+  grid.style.gridTemplateColumns = `140px repeat(${brands.length}, 1fr)`;
+  grid.innerHTML = html;
+}
+
+function brandBadge(marca) {
+  const cls = marca==='CATERPILLAR'?'cat':marca==='KOMATSU'?'kom':marca==='SANDVIK'?'san':marca==='HITACHI'?'hit':marca==='EPIROC'?'epi':'other';
+  return `<span class="badge badge-${cls}">${marca}</span>`;
+}
+
+function renderTable(data) {
+  let sorted = [...data];
+  sorted.sort((a,b) => {
+    const keys = ['cliente','nit','sector','marca','modelo','tipo','cantidad'];
+    let va = a[keys[sortCol]], vb = b[keys[sortCol]];
+    if(sortCol===6) { va=Number(va); vb=Number(vb); }
+    else { va=String(va).toLowerCase(); vb=String(vb).toLowerCase(); }
+    if(va<vb) return sortAsc?-1:1;
+    if(va>vb) return sortAsc?1:-1;
+    return 0;
+  });
+  
+  const start = page * PAGE_SIZE;
+  const pageData = sorted.slice(start, start+PAGE_SIZE);
+  
+  document.getElementById('tbody').innerHTML = pageData.map(r => `<tr>
+    <td style="cursor:pointer;color:var(--accent)" onclick="showClientModal('${r.cliente.replace(/'/g,"\\'")}')">${r.cliente}</td>
+    <td>${r.nit}</td>
+    <td>${r.sector}</td>
+    <td>${brandBadge(r.marca)}</td>
+    <td><strong>${r.modelo}</strong></td>
+    <td>${r.tipo}</td>
+    <td style="text-align:right;font-weight:700">${r.cantidad||'—'}</td>
+  </tr>`).join('');
+  
+  document.getElementById('pagerInfo').textContent = `Mostrando ${start+1}–${Math.min(start+PAGE_SIZE,sorted.length)} de ${sorted.length}`;
+  document.getElementById('prevBtn').disabled = page===0;
+  document.getElementById('nextBtn').disabled = start+PAGE_SIZE >= sorted.length;
+}
+
+function sortTable(col) {
+  if(sortCol===col) sortAsc=!sortAsc;
+  else { sortCol=col; sortAsc=col===6?false:true; }
+  renderTable(filtered());
+}
+
+function changePage(dir) {
+  page += dir;
+  renderTable(filtered());
+}
+
+function setFilter(key, val) {
+  filters[key] = val;
+  const idMap = {sector:'fSector',marca:'fMarca',tipo:'fTipo'};
+  if(idMap[key]) document.getElementById(idMap[key]).value = val;
+  render();
+}
+
+function showClientModal(name) {
+  const data = RAW_DATA.filter(r=>r.cliente===name);
+  if(!data.length) return;
+  
+  const totalUnits = data.reduce((s,r)=>s+r.cantidad,0);
+  const brands = aggregate(data,'marca');
+  const types = aggregate(data,'tipo');
+  const nit = data[0].nit;
+  const sector = data[0].sector;
+  
+  document.getElementById('modalTitle').textContent = name;
+  
+  let html = `<p style="color:var(--muted);margin-bottom:12px">NIT: ${nit} | Sector: ${sector} | Total: <strong>${totalUnits} unidades</strong></p>`;
+  
+  html += `<h4 style="margin:12px 0 8px;font-size:.85em;color:var(--muted)">Por Marca</h4>`;
+  html += brands.map(([b,v])=>`<span class="badge badge-other" style="margin:2px">${b}: ${v}</span>`).join(' ');
+  
+  html += `<h4 style="margin:16px 0 8px;font-size:.85em;color:var(--muted)">Detalle de Flota</h4>`;
+  html += `<table><thead><tr><th>Marca</th><th>Modelo</th><th>Tipo</th><th>Cant.</th></tr></thead><tbody>`;
+  data.sort((a,b)=>b.cantidad-a.cantidad).forEach(r => {
+    html += `<tr><td>${brandBadge(r.marca)}</td><td><strong>${r.modelo||'—'}</strong></td><td>${r.tipo}</td><td style="text-align:right;font-weight:700">${r.cantidad||'—'}</td></tr>`;
+  });
+  html += `</tbody></table>`;
+  
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+
+document.getElementById('modal').onclick = e => { if(e.target.classList.contains('modal-overlay')) closeModal(); };
+document.onkeydown = e => { if(e.key==='Escape') closeModal(); };
+
+function exportCSV() {
+  const data = filtered();
+  let csv = 'Cliente,NIT,Sector,Marca,Modelo,Tipo,Cantidad\n';
+  data.forEach(r => {
+    csv += [r.cliente,r.nit,r.sector,r.marca,r.modelo,r.tipo,r.cantidad].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',') + '\n';
+  });
+  const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'LyM_Colombia_Flotas_2026.csv';
+  a.click();
+}
+
+init();
+</script>
+</body>
+</html>
